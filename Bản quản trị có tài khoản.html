@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSCA · Product Knowledge Base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 13px; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f5f7; color: #111827; -webkit-font-smoothing: antialiased; }
+input, select, textarea, button { font-family: inherit; font-size: inherit; }
+:root {
+  --red: #dc2626; --red2: #b91c1c; --red-bg: #fef2f2; --red-b: #fecaca;
+  --green: #059669; --green-bg: #ecfdf5; --green-b: #a7f3d0;
+  --amber: #d97706; --amber-bg: #fffbeb; --amber-b: #fde68a;
+  --blue: #2563eb; --blue-bg: #eff6ff; --blue-b: #bfdbfe;
+  --c0: #0f1623; --c1: #1e2836; --c2: #374151; --c3: #6b7280;
+  --line: #e5e7eb; --bg: #f4f5f7; --white: #fff;
+  --r: 8px; --r2: 12px;
+  --sh: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+  --sh2: 0 4px 12px rgba(0,0,0,.09);
+  --sh3: 0 8px 24px rgba(0,0,0,.11);
+}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 5px; }
+
+/* ═══════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════ */
+.tb {
+  height: 50px; background: var(--c0); position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; padding: 0 20px; gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.tb-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.tb-mark { width: 28px; height: 28px; background: var(--red); border-radius: 6px; display: grid; place-items: center; font-weight: 800; font-size: 11px; color: #fff; letter-spacing: .5px; }
+.tb-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: .3px; }
+.tb-div { width: 1px; height: 18px; background: rgba(255,255,255,.1); margin: 0 14px; }
+.tb-crumb { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+.tbc { color: #6b7280; cursor: pointer; padding: 3px 6px; border-radius: 4px; transition: color .15s; white-space: nowrap; }
+.tbc:hover, .tbc.act { color: #e5e7eb; }
+.tbc-sep { color: #374151; font-size: 10px; }
+.tb-sp { flex: 1; }
+.tb-actions { display: flex; gap: 6px; }
+.tba { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+.tba-ghost { background: rgba(255,255,255,.07); color: #9ca3af; border: 1px solid rgba(255,255,255,.08); }
+.tba-ghost:hover { background: rgba(255,255,255,.13); color: #fff; }
+.tba-red { background: var(--red); color: #fff; }
+.tba-red:hover { background: var(--red2); }
+
+/* ═══════════════════════════════════════════
+   VIEWS
+═══════════════════════════════════════════ */
+.view { display: none; padding-top: 50px; min-height: 100vh; }
+.view.act { display: block; }
+
+/* ═══════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════ */
+.dash { max-width: 1100px; margin: 0 auto; padding: 28px 22px; }
+.dash-hero { margin-bottom: 24px; }
+.dash-hero h1 { font-size: 20px; font-weight: 800; color: var(--c0); letter-spacing: -.3px; }
+.dash-hero p { font-size: 12.5px; color: var(--c3); margin-top: 3px; }
+
+.kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; margin-bottom: 28px; }
+.kpi-c { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); padding: 15px 16px; box-shadow: var(--sh); }
+.kpi-c.acc-r { border-left: 3px solid var(--red); }
+.kpi-c.acc-b { border-left: 3px solid var(--blue); }
+.kpi-c.acc-g { border-left: 3px solid var(--green); }
+.kpi-c.acc-a { border-left: 3px solid var(--amber); }
+.kpi-n { font-size: 10px; font-weight: 700; color: var(--c3); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 7px; }
+.kpi-v { font-size: 26px; font-weight: 800; color: var(--c0); line-height: 1; letter-spacing: -1.5px; }
+.kpi-s { font-size: 11px; color: var(--c3); margin-top: 3px; }
+
+.sec-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sec-hd h2 { font-size: 13.5px; font-weight: 700; color: var(--c0); }
+.sec-hd span { font-size: 11.5px; color: var(--c3); }
+
+/* Industry cards */
+.ind-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+.ind-c {
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--r2);
+  padding: 18px 20px; cursor: pointer; box-shadow: var(--sh); transition: all .18s; position: relative; overflow: hidden;
+}
+.ind-c:before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--red); transform: scaleY(0); transition: transform .2s; transform-origin: top; }
+.ind-c:hover { box-shadow: var(--sh3); transform: translateY(-2px); border-color: #d1d5db; }
+.ind-c:hover:before { transform: scaleY(1); }
+.ind-icon { font-size: 22px; margin-bottom: 10px; }
+.ind-name { font-size: 14px; font-weight: 700; color: var(--c0); margin-bottom: 4px; }
+.ind-desc { font-size: 11.5px; color: var(--c3); line-height: 1.55; margin-bottom: 12px; }
+.ind-ft { display: flex; align-items: center; justify-content: space-between; }
+.ind-cnt { font-size: 11.5px; color: var(--c3); }
+.ind-cnt strong { color: var(--c1); font-weight: 700; }
+.ind-arr { color: var(--c3); font-size: 13px; transition: all .15s; }
+.ind-c:hover .ind-arr { color: var(--red); transform: translateX(4px); }
+
+/* ═══════════════════════════════════════════
+   PRODUCT GROUP VIEW
+═══════════════════════════════════════════ */
+.pg { max-width: 1100px; margin: 0 auto; padding: 28px 22px; }
+.back { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--c3); cursor: pointer; padding: 5px 9px; border-radius: 6px; transition: all .15s; margin-bottom: 18px; }
+.back:hover { background: var(--white); color: var(--c1); }
+.pg-hdr { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); padding: 18px 20px; margin-bottom: 18px; box-shadow: var(--sh); display: flex; align-items: center; gap: 14px; }
+.pg-hdr-ico { width: 44px; height: 44px; background: var(--red-bg); border-radius: 10px; display: grid; place-items: center; font-size: 20px; flex-shrink: 0; }
+.pg-hdr h1 { font-size: 17px; font-weight: 800; color: var(--c0); letter-spacing: -.2px; }
+.pg-hdr p { font-size: 12px; color: var(--c3); margin-top: 2px; }
+
+.grp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+.grp-c { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); overflow: hidden; cursor: pointer; box-shadow: var(--sh); transition: all .18s; }
+.grp-c:hover { box-shadow: var(--sh3); transform: translateY(-2px); border-color: #d1d5db; }
+.grp-thumb { height: 90px; background: linear-gradient(135deg, #f1f5f9, #e2e8f0); display: grid; place-items: center; font-size: 28px; position: relative; }
+.grp-badge { position: absolute; top: 7px; right: 7px; background: var(--c0); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: .3px; }
+.grp-body { padding: 13px 15px; }
+.grp-name { font-size: 13px; font-weight: 700; color: var(--c0); margin-bottom: 3px; }
+.grp-desc { font-size: 11.5px; color: var(--c3); line-height: 1.5; margin-bottom: 8px; }
+.grp-ft { display: flex; align-items: center; justify-content: space-between; font-size: 11px; }
+.grp-cnt { color: var(--red); font-weight: 700; }
+.grp-arrow { color: var(--c3); }
+
+/* ═══════════════════════════════════════════
+   PRODUCT LIST VIEW
+═══════════════════════════════════════════ */
+.pl { max-width: 1100px; margin: 0 auto; padding: 28px 22px; }
+.pl-bar { display: flex; align-items: center; gap: 9px; margin-bottom: 18px; flex-wrap: wrap; }
+.pl-search { display: flex; align-items: center; gap: 7px; background: var(--white); border: 1px solid var(--line); border-radius: var(--r); padding: 7px 12px; flex: 1; min-width: 180px; box-shadow: var(--sh); }
+.pl-search input { border: none; outline: none; font-size: 12.5px; color: var(--c1); background: transparent; width: 100%; }
+.pl-search input::placeholder { color: var(--c3); }
+.fchips { display: flex; gap: 5px; flex-wrap: wrap; }
+.fc { padding: 5px 11px; border-radius: 20px; font-size: 11.5px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--line); background: var(--white); color: var(--c3); transition: all .15s; }
+.fc:hover, .fc.on { background: var(--c0); border-color: var(--c0); color: #fff; }
+.add-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 15px; border-radius: var(--r); font-size: 12px; font-weight: 700; cursor: pointer; border: none; background: var(--red); color: #fff; transition: background .15s; white-space: nowrap; }
+.add-btn:hover { background: var(--red2); }
+
+.prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 13px; }
+.prod-c { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); overflow: hidden; cursor: pointer; box-shadow: var(--sh); transition: all .2s; }
+.prod-c:hover { border-color: #9ca3af; box-shadow: var(--sh3); transform: translateY(-2px); }
+.prod-img { height: 120px; background: linear-gradient(135deg, #f1f5f9, #e2e8f0); display: grid; place-items: center; position: relative; overflow: hidden; font-size: 32px; }
+.prod-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.prod-status { position: absolute; top: 7px; right: 7px; font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+.st-draft { background: #fff; color: var(--c3); border: 1px solid var(--line); }
+.st-review { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-b); }
+.st-approved { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-b); }
+.prod-body { padding: 11px 13px; }
+.prod-code { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--c3); margin-bottom: 4px; }
+.prod-name { font-size: 12.5px; font-weight: 700; color: var(--c0); margin-bottom: 6px; line-height: 1.35; }
+.prod-tags { display: flex; gap: 3px; flex-wrap: wrap; margin-bottom: 8px; }
+.ptag { font-size: 9.5px; font-weight: 600; padding: 1px 7px; border-radius: 4px; background: var(--bg); color: var(--c3); border: 1px solid var(--line); }
+.prod-prog { display: flex; align-items: center; gap: 7px; }
+.prod-bar { flex: 1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.prod-bar-f { height: 100%; background: var(--green); border-radius: 2px; }
+.prod-pct { font-size: 10px; font-weight: 700; color: var(--c3); min-width: 24px; text-align: right; }
+.prod-ft { padding: 8px 13px; background: var(--bg); border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: var(--c3); }
+.prod-ft .art { font-weight: 700; color: var(--c1); font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+
+.prod-add { border: 2px dashed var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; min-height: 200px; cursor: pointer; transition: all .18s; }
+.prod-add:hover { border-color: var(--red); background: var(--red-bg); }
+.prod-add-ico { width: 36px; height: 36px; background: var(--line); border-radius: 50%; display: grid; place-items: center; font-size: 16px; transition: all .18s; }
+.prod-add:hover .prod-add-ico { background: var(--red); color: #fff; }
+.prod-add span { font-size: 12px; font-weight: 600; color: var(--c3); }
+.prod-add:hover span { color: var(--red); }
+
+/* ═══════════════════════════════════════════
+   TDS EDITOR
+═══════════════════════════════════════════ */
+.tds { display: flex; height: calc(100vh - 50px); }
+
+/* Sidebar */
+.tds-sb { width: 210px; flex-shrink: 0; background: var(--white); border-right: 1px solid var(--line); display: flex; flex-direction: column; overflow-y: auto; }
+.sb-top { padding: 14px 15px; border-bottom: 1px solid var(--line); }
+.sb-pname { font-size: 12px; font-weight: 700; color: var(--c0); line-height: 1.4; margin-bottom: 2px; }
+.sb-pcode { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--c3); }
+.sb-comp { padding: 11px 15px; border-bottom: 1px solid var(--line); }
+.sb-comp-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.sb-comp-lbl { font-size: 10.5px; font-weight: 600; color: var(--c3); }
+.sb-comp-pct { font-size: 12px; font-weight: 800; color: var(--c0); }
+.sb-bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.sb-bar-f { height: 100%; background: var(--green); border-radius: 2px; transition: width .4s; }
+
+/* Tab checklist */
+.sb-nav { flex: 1; padding: 8px 0; }
+.sb-item { display: flex; align-items: center; gap: 8px; padding: 8px 15px; font-size: 12px; font-weight: 500; color: var(--c3); cursor: pointer; border-left: 2px solid transparent; transition: all .15s; }
+.sb-item:hover { background: var(--bg); color: var(--c1); }
+.sb-item.act { color: var(--red); border-left-color: var(--red); background: var(--red-bg); font-weight: 600; }
+.sb-item.done .sb-ck { background: var(--green); border-color: var(--green); color: #fff; }
+.sb-ico { font-size: 13px; flex-shrink: 0; }
+.sb-ck { margin-left: auto; width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid var(--line); font-size: 8px; display: grid; place-items: center; color: transparent; flex-shrink: 0; transition: all .2s; }
+
+.sb-bot { padding: 12px 14px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+.sb-btn { width: 100%; padding: 8px; border-radius: var(--r); font-size: 11.5px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.sb-btn-r { background: var(--red); color: #fff; }
+.sb-btn-r:hover { background: var(--red2); }
+.sb-btn-n { background: var(--bg); color: var(--c1); border: 1px solid var(--line); }
+.sb-btn-n:hover { background: var(--line); }
+
+/* Main area */
+.tds-main { flex: 1; overflow-y: auto; background: var(--bg); }
+.tds-panels { padding: 22px; max-width: 880px; }
+.tds-p { display: none; }
+.tds-p.act { display: block; }
+
+/* Panel header */
+.p-hd { margin-bottom: 18px; }
+.p-hd h2 { font-size: 16px; font-weight: 800; color: var(--c0); letter-spacing: -.2px; }
+.p-hd p { font-size: 12px; color: var(--c3); margin-top: 2px; }
+
+/* Section card */
+.sc { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); overflow: hidden; box-shadow: var(--sh); margin-bottom: 14px; }
+.sc-hd { padding: 11px 16px; background: var(--bg); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+.sc-hd-l { display: flex; align-items: center; gap: 9px; }
+.sc-ico { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; flex-shrink: 0; }
+.sc-ico.r { background: var(--red-bg); }
+.sc-ico.g { background: var(--green-bg); }
+.sc-ico.b { background: var(--blue-bg); }
+.sc-ico.a { background: var(--amber-bg); }
+.sc-t { font-size: 11.5px; font-weight: 700; color: var(--c0); }
+.sc-s { font-size: 10.5px; color: var(--c3); }
+.sc-body { padding: 16px; }
+.sc-body.p0 { padding: 0; }
+
+/* Fields */
+.fg { display: grid; gap: 13px; }
+.fg2 { grid-template-columns: 1fr 1fr; }
+.fg3 { grid-template-columns: 1fr 1fr 1fr; }
+.fg4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.fl label { display: block; font-size: 10.5px; font-weight: 700; color: var(--c3); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px; }
+.fl input, .fl select, .fl textarea {
+  width: 100%; padding: 7px 10px; border: 1.5px solid var(--line);
+  border-radius: var(--r); font-size: 12.5px; color: var(--c1); background: var(--white); outline: none;
+  transition: border-color .15s; resize: vertical;
+}
+.fl input:focus, .fl select:focus, .fl textarea:focus { border-color: var(--blue); }
+.fl select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 9px center; padding-right: 26px; appearance: none; }
+
+/* Data table */
+.dt { width: 100%; border-collapse: collapse; }
+.dt th { background: var(--c0); color: #fff; font-size: 10.5px; font-weight: 600; padding: 8px 12px; text-align: left; white-space: nowrap; }
+.dt td { padding: 7px 12px; border-bottom: 1px solid var(--line); font-size: 12px; vertical-align: middle; }
+.dt tr:last-child td { border-bottom: none; }
+.dt tr:nth-child(even) td { background: var(--bg); }
+.dt td[contenteditable] { outline: none; border-radius: 3px; transition: background .12s; cursor: text; }
+.dt td[contenteditable]:hover { background: #fffbeb; }
+.dt td[contenteditable]:focus { background: #fef9c3; box-shadow: inset 0 0 0 1.5px rgba(234,179,8,.4); }
+.dt .mono { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--c3); }
+.add-tr-btn { width: 100%; padding: 7px; border: none; background: var(--bg); font-size: 11.5px; color: var(--c3); font-family: inherit; font-weight: 600; cursor: pointer; border-top: 1px dashed var(--line); transition: all .15s; }
+.add-tr-btn:hover { background: var(--blue-bg); color: var(--blue); }
+
+/* Upload zone */
+.uz { border: 2px dashed var(--line); border-radius: var(--r); min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; transition: all .18s; background: var(--bg); position: relative; overflow: hidden; }
+.uz:hover { border-color: var(--blue); background: var(--blue-bg); }
+.uz img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.uz input { display: none; }
+.uz-ico { font-size: 20px; color: var(--c3); }
+.uz-txt { font-size: 12px; font-weight: 600; color: var(--c3); }
+.uz-hint { font-size: 11px; color: #9ca3af; }
+
+/* Chips */
+.chip { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.ch-r { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-b); }
+.ch-g { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-b); }
+.ch-a { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-b); }
+.ch-b { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-b); }
+
+/* Steps */
+.step-c { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); overflow: hidden; box-shadow: var(--sh); margin-bottom: 11px; }
+.step-hd { display: flex; align-items: center; gap: 9px; padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.step-ti { flex: 1; border: none; background: none; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--c0); outline: none; padding: 2px 4px; border-radius: 3px; }
+.step-ti:focus { background: #fef9c3; }
+.step-body { padding: 13px 15px; }
+.step-desc { font-size: 12.5px; line-height: 1.65; color: var(--c2); min-height: 36px; }
+.del-btn { background: none; border: none; color: var(--c3); cursor: pointer; font-size: 13px; padding: 3px 5px; border-radius: 4px; transition: all .15s; }
+.del-btn:hover { background: var(--red-bg); color: var(--red); }
+
+/* QC */
+.qc-hd { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 80px; gap: 6px; padding: 7px 12px; background: var(--c0); font-size: 10.5px; font-weight: 600; color: #fff; }
+.qc-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 80px; gap: 6px; padding: 7px 12px; border-bottom: 1px solid var(--line); align-items: center; }
+.qc-row:last-child { border-bottom: none; }
+.qc-row:nth-child(even) { background: var(--bg); }
+.qc-row td[contenteditable] { outline: none; border-radius: 3px; padding: 2px 4px; }
+.qc-row td[contenteditable]:hover { background: #fffbeb; }
+.qc-row td[contenteditable]:focus { background: #fef9c3; }
+.qc-sel { padding: 3px 8px; border-radius: 20px; font-size: 10.5px; font-weight: 600; border: none; cursor: pointer; font-family: inherit; outline: none; }
+.qcs-p { background: var(--green-bg); color: var(--green); }
+.qcs-f { background: var(--red-bg); color: var(--red); }
+.qcs-n { background: var(--amber-bg); color: var(--amber); }
+
+/* Stat row */
+.stat-row { display: grid; gap: 11px; margin-bottom: 16px; }
+.stat-row.g4 { grid-template-columns: repeat(4, 1fr); }
+.stat-m { background: var(--white); border: 1px solid var(--line); border-radius: var(--r2); padding: 12px 14px; box-shadow: var(--sh); }
+.stat-m.r { border-left: 3px solid var(--red); }
+.stat-m.g { border-left: 3px solid var(--green); }
+.stat-m.a { border-left: 3px solid var(--amber); }
+.stat-m.b { border-left: 3px solid var(--blue); }
+.sm-l { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--c3); margin-bottom: 4px; }
+.sm-v { font-size: 20px; font-weight: 800; color: var(--c0); line-height: 1; letter-spacing: -1px; }
+.sm-s { font-size: 10.5px; color: var(--c3); margin-top: 2px; }
+
+.btn { display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+.btn-r { background: var(--red); color: #fff; }
+.btn-r:hover { background: var(--red2); }
+.btn-g { background: var(--green); color: #fff; }
+.btn-ghost { background: var(--bg); color: var(--c1); border: 1px solid var(--line); }
+.btn-ghost:hover { background: var(--line); }
+.add-step-btn { width: 100%; padding: 10px; border: 2px dashed var(--line); border-radius: var(--r); background: none; font-size: 12px; color: var(--c3); cursor: pointer; font-family: inherit; font-weight: 600; transition: all .18s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.add-step-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
+
+[contenteditable] { outline: none; }
+
+/* ═══════════════════════════════════════════
+   MODAL (new product / edit)
+═══════════════════════════════════════════ */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 500; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: var(--white); border-radius: var(--r2); padding: 24px; width: 480px; max-width: 95vw; box-shadow: var(--sh3); }
+.modal h3 { font-size: 15px; font-weight: 800; color: var(--c0); margin-bottom: 18px; }
+.modal-ft { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+/* ═══════════════════════════════════════════
+   PDF / PRINT
+═══════════════════════════════════════════ */
+.pdf-cov { display: none; }
+.pdf-sec-t { display: none; }
+
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background: white; font-size: 8.5pt; }
+  .tb, .tds-sb, .sb-bot, .add-tr-btn, .add-step-btn, .del-btn, .btn, .add-btn,
+  .uz-ico, .uz-txt, .uz-hint, .no-print, input[type=file] { display: none !important; }
+  .view { display: block !important; padding-top: 0; }
+  .tds { display: block; height: auto; }
+  .tds-main { overflow: visible; }
+  .tds-panels { padding: 0; max-width: 100%; }
+  .tds-p { display: block !important; page-break-before: always; padding-top: 12pt; }
+  .tds-p:first-of-type { page-break-before: avoid; }
+  .sc { box-shadow: none; page-break-inside: avoid; border: 1px solid #e5e7eb; }
+  .pdf-sec-t { display: flex !important; background: #1e2836 !important; color: white !important; padding: 8pt 14pt; font-size: 12pt; font-weight: 800; margin-bottom: 12pt; align-items: center; justify-content: space-between; border-radius: 4pt; }
+  .pdf-cov { display: block !important; page-break-after: always; background: #0f1623 !important; min-height: 100vh; }
+  .pco-acc { height: 5pt; background: var(--red); }
+  .pco-body { padding: 44pt 48pt; display: flex; flex-direction: column; min-height: calc(100vh - 5pt); }
+  .pco-logo { display: flex; align-items: center; gap: 10pt; margin-bottom: 60pt; }
+  .pco-mark { width: 36pt; height: 36pt; background: var(--red) !important; border-radius: 7pt; display: flex; align-items: center; justify-content: center; font-size: 13pt; font-weight: 800; color: white; }
+  .pco-bn { font-size: 13pt; font-weight: 800; color: white; letter-spacing: 2pt; }
+  .pco-bs { font-size: 8pt; color: #4b5563; }
+  .pco-kicker { font-size: 7.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 3pt; color: var(--red); margin-bottom: 10pt; }
+  .pco-title { font-size: 28pt; font-weight: 800; color: white; letter-spacing: -1pt; line-height: 1.1; margin-bottom: 14pt; }
+  .pco-desc { font-size: 10pt; color: #6b7280; line-height: 1.7; max-width: 380pt; margin-bottom: 32pt; }
+  .pco-badges { display: flex; gap: 8pt; flex-wrap: wrap; margin-bottom: 40pt; }
+  .pco-badge { background: rgba(255,255,255,.07); border: 1pt solid rgba(255,255,255,.12); color: #d1d5db; padding: 3pt 12pt; border-radius: 20pt; font-size: 8.5pt; font-weight: 600; }
+  .pco-specs { display: grid; grid-template-columns: repeat(3,1fr); gap: 16pt; margin-bottom: auto; padding-bottom: 40pt; }
+  .pco-spec .pcs-l { font-size: 7pt; text-transform: uppercase; letter-spacing: 1pt; color: #374151; font-weight: 700; margin-bottom: 3pt; }
+  .pco-spec .pcs-v { font-size: 11pt; color: white; font-weight: 600; }
+  .pco-ft { border-top: 1pt solid rgba(255,255,255,.07); padding-top: 14pt; display: flex; justify-content: space-between; align-items: flex-end; }
+  .pco-ft-l { font-size: 7.5pt; color: #374151; line-height: 1.7; }
+  .pco-ft-l strong { color: #6b7280; display: block; margin-bottom: 2pt; }
+  .pco-qr svg { display: block; }
+  .pco-qr-l { font-size: 7pt; color: #374151; text-align: right; margin-top: 4pt; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="tb">
+  <a class="tb-logo" href="#" onclick="goView('dash');return false;">
+    <div class="tb-mark">NS</div>
+    <span class="tb-name">NSCA</span>
+  </a>
+  <div class="tb-div"></div>
+  <div class="tb-crumb" id="crumb">
+    <span class="tbc act">Dashboard</span>
+  </div>
+  <div class="tb-sp"></div>
+  <div class="tb-actions">
+    <button class="tba tba-ghost" id="lang-btn" onclick="toggleLang()" title="Switch Language">🌐 VI</button>
+    <div id="tb-user-info" style="display:none;align-items:center;gap:8px;">
+      <div id="tb-avatar" style="width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800;">?</div>
+      <div style="line-height:1.2;">
+        <div id="tb-uname" style="font-size:11.5px;font-weight:700;color:#e5e7eb;">—</div>
+        <div id="tb-urole" style="font-size:10px;color:#6b7280;">—</div>
+      </div>
+      <button class="tba tba-ghost" onclick="doLogout()" style="font-size:11px;padding:4px 8px;" data-vi="Đăng xuất" data-en="Logout">Đăng xuất</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ AUTH OVERLAY ═══════════ -->
+<div id="auth-overlay" style="display:flex;position:fixed;inset:0;background:#0f1623;z-index:999;align-items:center;justify-content:center;overflow-y:auto;padding:24px;">
+  <div id="auth-box" style="background:#1e2836;border-radius:16px;width:400px;max-width:100%;box-shadow:0 24px 64px rgba(0,0,0,.5);overflow:hidden;">
+    <div style="background:#0f1623;padding:24px 28px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px;">
+      <div style="width:36px;height:36px;background:#dc2626;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:13px;">NS</div>
+      <div>
+        <div style="font-size:14px;font-weight:800;color:#fff;letter-spacing:.5px;">NSCA &middot; PKB</div>
+        <div style="font-size:10px;color:#4b5563;" data-vi="He thong tai lieu ky thuat" data-en="Product Knowledge Base">H&#7879; th&#7889;ng t&#224;i li&#7879;u k&#7929; thu&#7853;t</div>
+      </div>
+    </div>
+    <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.07);">
+      <button id="atab-login" onclick="switchAuthTab('login')" style="flex:1;padding:12px;background:rgba(220,38,38,.15);border:none;color:#dc2626;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border-bottom:2px solid #dc2626;" data-vi="&#272;&#259;ng nh&#7853;p" data-en="Login">&#272;&#259;ng nh&#7853;p</button>
+      <button id="atab-reg" onclick="switchAuthTab('reg')" style="flex:1;padding:12px;background:transparent;border:none;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;" data-vi="&#272;&#259;ng k&yacute; t&agrave;i kho&#7843;n" data-en="Register">&#272;&#259;ng k&yacute; t&agrave;i kho&#7843;n</button>
+    </div>
+    <div id="apanel-login" style="padding:24px 28px;">
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="T&#234;n &#273;&#259;ng nh&#7853;p" data-en="Username">T&#234;n &#273;&#259;ng nh&#7853;p</label>
+        <input id="a-login-user" type="text" placeholder="username" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="M&#7853;t kh&#7849;u" data-en="Password">M&#7853;t kh&#7849;u</label>
+        <input id="a-login-pass" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div id="login-err" style="color:#f87171;font-size:12px;margin-bottom:12px;display:none;"></div>
+      <button onclick="doLogin()" style="width:100%;background:#dc2626;border:none;color:#fff;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;" data-vi="&#272;&#259;ng nh&#7853;p" data-en="Login">&#272;&#259;ng nh&#7853;p</button>
+      <div style="margin-top:14px;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:8px;font-size:10.5px;color:#4b5563;line-height:1.9;">
+        Demo: <span style="color:#9ca3af;">admin / admin123</span> &nbsp;&middot;&nbsp; <span style="color:#9ca3af;">viewer / view123</span> &nbsp;&middot;&nbsp; <span style="color:#9ca3af;">guest / guest123</span>
+      </div>
+    </div>
+    <div id="apanel-reg" style="padding:24px 28px;display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="H&#7885; t&#234;n" data-en="Full Name">H&#7885; t&#234;n</label>
+          <input id="a-reg-name" type="text" placeholder="Nguy&#7877;n V&#259;n A" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:12px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'">
+        </div>
+        <div>
+          <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="B&#7897; ph&#7853;n" data-en="Department">B&#7897; ph&#7853;n</label>
+          <input id="a-reg-dept" type="text" placeholder="R&amp;D / X&#432;&#7903;ng SX / QC" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:12px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'">
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="T&#234;n &#273;&#259;ng nh&#7853;p" data-en="Username">T&#234;n &#273;&#259;ng nh&#7853;p</label>
+        <input id="a-reg-user" type="text" placeholder="username" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:12px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="M&#7853;t kh&#7849;u" data-en="Password">M&#7853;t kh&#7849;u</label>
+        <input id="a-reg-pass" type="password" placeholder="T&#7889;i thi&#7875;u 6 k&yacute; t&#7921;" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:12px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;" data-vi="Email" data-en="Email">Email</label>
+        <input id="a-reg-email" type="email" placeholder="example@nsca.vn" style="width:100%;background:#0f1623;border:1.5px solid #374151;border-radius:8px;padding:9px 12px;color:#fff;font-size:12px;outline:none;" onfocus="this.style.borderColor='#dc2626'" onblur="this.style.borderColor='#374151'">
+      </div>
+      <div id="reg-err" style="color:#f87171;font-size:12px;margin-bottom:10px;display:none;"></div>
+      <button onclick="doRegister()" style="width:100%;background:#2563eb;border:none;color:#fff;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;" data-vi="G&#7917;i y&#234;u c&#7847;u &#273;&#259;ng k&yacute;" data-en="Submit Registration">G&#7917;i y&#234;u c&#7847;u &#273;&#259;ng k&yacute;</button>
+      <div style="margin-top:10px;font-size:10.5px;color:#4b5563;text-align:center;" data-vi="T&#224;i kho&#7843;n c&#7847;n &#273;&#432;&#7907;c Admin ph&#234; duy&#7879;t tr&#432;&#7899;c khi &#273;&#259;ng nh&#7853;p" data-en="Account requires Admin approval before login">T&#224;i kho&#7843;n c&#7847;n &#273;&#432;&#7907;c Admin ph&#234; duy&#7879;t tr&#432;&#7899;c khi &#273;&#259;ng nh&#7853;p</div>
+    </div>
+  </div>
+</div>
+
+<!-- USER MGMT MODAL -->
+<div id="user-mgmt-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:14px;width:780px;max-width:96vw;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.3);">
+    <div style="background:#0f1623;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <h3 style="color:#fff;font-size:14px;font-weight:800;" id="umgmt-title">&#128101; Qu&#7843;n l&yacute; t&#224;i kho&#7843;n ng&#432;&#7901;i d&ugrave;ng</h3>
+      <button onclick="closeUserMgmt()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;">&#10005;</button>
+    </div>
+    <div style="padding:16px 20px;flex:1;overflow-y:auto;">
+      <div id="pending-label" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#d97706;margin-bottom:10px;">&#9203; Ch&#7901; ph&#234; duy&#7879;t</div>
+      <div id="pending-list" style="margin-bottom:20px;"></div>
+      <div id="approved-label" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#059669;margin-bottom:10px;">&#10003; T&#224;i kho&#7843;n &#273;&#227; ph&#234; duy&#7879;t</div>
+      <div id="approved-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF SECTION PICKER MODAL -->
+<div id="pdf-picker-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:550;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:14px;width:480px;max-width:96vw;box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden;">
+    <div style="background:#0f1623;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <h3 id="picker-title" style="color:#fff;font-size:14px;font-weight:800;">&#128424; Ch&#7885;n n&#7897;i dung xu&#7845;t PDF</h3>
+      <button onclick="closePdfPicker()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;">&#10005;</button>
+    </div>
+    <div style="padding:20px 24px;">
+      <div id="picker-hint" style="font-size:11px;color:#6b7280;margin-bottom:16px;">Tick c&aacute;c ph&#7847;n mu&#7889;n xu&#7845;t ra t&#224;i li&#7879;u A4</div>
+      <div id="pdf-section-checks" style="display:grid;gap:10px;"></div>
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <button onclick="pdfPickerSelectAll(true)" style="font-size:11px;color:#2563eb;background:none;border:none;cursor:pointer;padding:4px 0;font-family:inherit;" id="btn-selall">Ch&#7885;n t&#7845;t c&#7843;</button>
+        <button onclick="pdfPickerSelectAll(false)" style="font-size:11px;color:#6b7280;background:none;border:none;cursor:pointer;padding:4px 0;font-family:inherit;" id="btn-deselall">B&#7887; ch&#7885;n t&#7845;t c&#7843;</button>
+      </div>
+    </div>
+    <div style="padding:14px 24px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:10px;">
+      <button onclick="closePdfPicker()" style="background:#f4f5f7;border:1px solid #e5e7eb;color:#374151;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:600;font-family:inherit;" id="btn-cancel-picker">H&#7911;y</button>
+      <button onclick="runPdfPreview()" style="background:#dc2626;border:none;color:#fff;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:700;font-family:inherit;" id="btn-run-preview">&#128065; Xem tr&#432;&#7899;c</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<div id="v-dash" class="view act">
+<div class="dash">
+  <div class="dash-hero">
+    <h1>Product Knowledge Base</h1>
+    <p>NSCA — Ngôi Sao Châu Á · Hệ thống tài liệu kỹ thuật sản phẩm MEP</p>
+  </div>
+  <div class="kpi">
+    <div class="kpi-c acc-r"><div class="kpi-n">Nhóm ngành</div><div class="kpi-v">3</div><div class="kpi-s">Industry groups</div></div>
+    <div class="kpi-c acc-b"><div class="kpi-n">Nhóm sản phẩm</div><div class="kpi-v">9</div><div class="kpi-s">Product categories</div></div>
+    <div class="kpi-c acc-g"><div class="kpi-n">Sản phẩm</div><div class="kpi-v" id="kpi-prods">0</div><div class="kpi-s">Active products</div></div>
+    <div class="kpi-c acc-a"><div class="kpi-n">TDS hoàn thiện</div><div class="kpi-v" id="kpi-done">0</div><div class="kpi-s">Datasheets approved</div></div>
+  </div>
+  <div class="sec-hd"><h2>Nhóm ngành · Chọn để xem sản phẩm</h2><span>3 nhóm</span></div>
+  <div class="ind-grid">
+    <div class="ind-c" onclick="goIndustry('hvac','🌀','Hệ thống HVAC','Cửa gió, khuếch tán khí, van điều chỉnh')">
+      <div class="ind-icon">🌀</div>
+      <div class="ind-name">Hệ thống HVAC</div>
+      <div class="ind-desc">Cửa gió, khuếch tán khí, van điều chỉnh, hộp VAV và phụ kiện điều hòa không khí công nghiệp</div>
+      <div class="ind-ft"><span class="ind-cnt"><strong>4</strong> nhóm sản phẩm</span><span class="ind-arr">→</span></div>
+    </div>
+    <div class="ind-c" onclick="goIndustry('fire','🔥','Phòng cháy chữa cháy','Van chặn lửa, van chặn khói, cửa gió EI')">
+      <div class="ind-icon">🔥</div>
+      <div class="ind-name">Phòng cháy chữa cháy</div>
+      <div class="ind-desc">Van cầu chì FD, van chặn khói SD, cửa gió chịu lửa EI và hệ thống phòng cháy tích hợp</div>
+      <div class="ind-ft"><span class="ind-cnt"><strong>3</strong> nhóm sản phẩm</span><span class="ind-arr">→</span></div>
+    </div>
+    <div class="ind-c" onclick="goIndustry('vav','📦','VAV & Điều tiết khí','Hộp VAV, van VCD, bộ điều khiển lưu lượng')">
+      <div class="ind-icon">📦</div>
+      <div class="ind-name">VAV & Điều tiết</div>
+      <div class="ind-desc">Hộp VAV STARDUCT-BELIMO, van VCD EI, bộ điều khiển lưu lượng, phụ kiện đường ống</div>
+      <div class="ind-ft"><span class="ind-cnt"><strong>2</strong> nhóm sản phẩm</span><span class="ind-arr">→</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ INDUSTRY / GROUPS ═══════════ -->
+<div id="v-ind" class="view">
+<div class="pg">
+  <div class="back" onclick="goView('dash')">← Quay lại</div>
+  <div class="pg-hdr">
+    <div class="pg-hdr-ico" id="ind-ico">🌀</div>
+    <div><h1 id="ind-title">Hệ thống HVAC</h1><p id="ind-desc">Cửa gió, khuếch tán, van điều chỉnh</p></div>
+  </div>
+  <div class="sec-hd"><h2>Nhóm sản phẩm</h2><span>Chọn nhóm để xem danh sách</span></div>
+  <div class="grp-grid" id="grp-grid"></div>
+</div>
+</div>
+
+<!-- ═══════════ PRODUCT LIST ═══════════ -->
+<div id="v-prods" class="view">
+<div class="pl">
+  <div class="back" onclick="goView('ind')">← Quay lại</div>
+  <div class="pg-hdr" style="margin-bottom:18px;">
+    <div class="pg-hdr-ico" id="grp-ico">📋</div>
+    <div><h1 id="grp-title">Cửa gió khuếch tán</h1><p id="grp-desc">Circular duct grilles</p></div>
+  </div>
+  <div class="pl-bar">
+    <div class="pl-search">
+      <svg width="13" height="13" fill="none" stroke="#9ca3af" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="prod-search" type="text" placeholder="Tìm sản phẩm..." oninput="filterProds()">
+    </div>
+    <div class="fchips">
+      <div class="fc on" onclick="setFilter(this,'all')">Tất cả</div>
+      <div class="fc" onclick="setFilter(this,'draft')">Draft</div>
+      <div class="fc" onclick="setFilter(this,'review')">In Review</div>
+      <div class="fc" onclick="setFilter(this,'approved')">Approved</div>
+    </div>
+    <button class="add-btn" onclick="showAddModal()">+ Thêm sản phẩm</button>
+  </div>
+  <div class="prod-grid" id="prod-grid"></div>
+</div>
+</div>
+
+<!-- ═══════════ TDS EDITOR ═══════════ -->
+<div id="v-tds" class="view">
+<div class="tds">
+
+  <!-- Sidebar -->
+  <aside class="tds-sb">
+    <div class="sb-top">
+      <div class="sb-pname" id="sb-name">Tên sản phẩm</div>
+      <div class="sb-pcode" id="sb-code">Art. —</div>
+    </div>
+    <div class="sb-comp">
+      <div class="sb-comp-row">
+        <span class="sb-comp-lbl">Hoàn thiện</span>
+        <span class="sb-comp-pct" id="comp-pct">0%</span>
+      </div>
+      <div class="sb-bar"><div class="sb-bar-f" id="comp-fill" style="width:0%"></div></div>
+    </div>
+    <nav class="sb-nav" id="sb-nav">
+      <div class="sb-item act" onclick="goPanel('p0',this)" data-p="p0"><span class="sb-ico">📋</span>Overview<div class="sb-ck">✓</div></div>
+      <div class="sb-item" onclick="goPanel('p1',this)" data-p="p1"><span class="sb-ico">⚙️</span>Specifications<div class="sb-ck">✓</div></div>
+      <div class="sb-item" onclick="goPanel('p2',this)" data-p="p2"><span class="sb-ico">📐</span>Drawings & CAD<div class="sb-ck">✓</div></div>
+      <div class="sb-item" onclick="goPanel('p3',this)" data-p="p3"><span class="sb-ico">🏭</span>Manufacturing SOP<div class="sb-ck">✓</div></div>
+      <div class="sb-item" onclick="goPanel('p4',this)" data-p="p4"><span class="sb-ico">📦</span>Bill of Materials<div class="sb-ck">✓</div></div>
+      <div class="sb-item" onclick="goPanel('p5',this)" data-p="p5"><span class="sb-ico">🔍</span>QC / Standards<div class="sb-ck">✓</div></div>
+      <div class="sb-item" onclick="goPanel('p6',this)" data-p="p6"><span class="sb-ico">🖼</span>Media<div class="sb-ck">✓</div></div>
+    </nav>
+    <div class="sb-bot">
+      <button class="sb-btn sb-btn-r" onclick="exportPDF()">🖨 Xuất PDF A4</button>
+      <button class="sb-btn sb-btn-n" onclick="saveProduct()">💾 Lưu</button>
+      <button class="sb-btn sb-btn-n" onclick="goView('prods')" style="font-size:11px;">← Danh sách SP</button>
+    </div>
+  </aside>
+
+  <!-- Main panels -->
+  <div class="tds-main">
+  <div class="tds-panels">
+
+    <!-- PDF COVER (print only) -->
+    <div class="pdf-cov">
+      <div class="pco-acc"></div>
+      <div class="pco-body">
+        <div class="pco-logo"><div class="pco-mark">NS</div><div><div class="pco-bn">NSCA</div><div class="pco-bs">starduct.vn · MEP Products Vietnam</div></div></div>
+        <div class="pco-kicker">Technical Data Sheet</div>
+        <div class="pco-title" id="cov-title">—</div>
+        <div class="pco-desc" id="cov-desc">—</div>
+        <div class="pco-badges" id="cov-badges"></div>
+        <div class="pco-specs" id="cov-specs"></div>
+        <div class="pco-ft">
+          <div class="pco-ft-l"><strong>NSCA — Ngôi Sao Châu Á JSC</strong>starduct.vn · 1800 1800<br>Vietnam's leading MEP accessories manufacturer<br><span id="cov-date" style="color:#6b7280;font-size:7pt;"></span></div>
+          <div class="pco-qr"><svg width="56" height="56" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="4" fill="white"/><rect x="6" y="6" width="18" height="18" rx="2" stroke="#111827" stroke-width="2" fill="none"/><rect x="10" y="10" width="10" height="10" fill="#111827"/><rect x="40" y="6" width="18" height="18" rx="2" stroke="#111827" stroke-width="2" fill="none"/><rect x="44" y="10" width="10" height="10" fill="#111827"/><rect x="6" y="40" width="18" height="18" rx="2" stroke="#111827" stroke-width="2" fill="none"/><rect x="10" y="44" width="10" height="10" fill="#111827"/><rect x="28" y="6" width="4" height="4" fill="#111827"/><rect x="28" y="14" width="4" height="4" fill="#111827"/><rect x="36" y="28" width="4" height="4" fill="#111827"/><rect x="44" y="36" width="4" height="4" fill="#111827"/><rect x="52" y="52" width="4" height="4" fill="#111827"/><rect x="28" y="44" width="4" height="4" fill="#111827"/><rect x="36" y="52" width="4" height="4" fill="#111827"/></svg><div class="pco-qr-l">starduct.vn</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P0: OVERVIEW ── -->
+    <div id="p0" class="tds-p act">
+      <div class="pdf-sec-t">📋 Overview <span id="p0-pcode"></span></div>
+      <div class="p-hd"><h2>📋 Overview</h2><p>Thông tin tổng quan sản phẩm</p></div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico r">🏷</div><div><div class="sc-t">Thông tin cơ bản</div><div class="sc-s">Product identity</div></div></div></div>
+        <div class="sc-body">
+          <div class="fg fg4" style="margin-bottom:13px;">
+            <div class="fl"><label>Tên sản phẩm</label><input id="f-name" type="text" placeholder="VD: NOVA-C-1-225x75-V-ZN" oninput="syncName()"></div>
+            <div class="fl"><label>Mã sản phẩm / Art. No.</label><input id="f-art" type="text" placeholder="VD: 40775" oninput="syncCode()"></div>
+            <div class="fl"><label>Revision</label><input id="f-rev" type="text" placeholder="Rev. A"></div>
+            <div class="fl"><label>Trạng thái</label><select id="f-status" onchange="syncStatus()"><option value="draft">Draft</option><option value="review">In Review</option><option value="approved">Approved</option></select></div>
+          </div>
+          <div class="fg fg2">
+            <div class="fl"><label>Ứng dụng / Application</label><input id="f-app" type="text" placeholder="Industrial & Commercial"></div>
+            <div class="fl"><label>Series</label><input id="f-series" type="text" placeholder="NOVA-C"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico b">📝</div><div><div class="sc-t">Mô tả sản phẩm</div></div></div></div>
+        <div class="sc-body">
+          <div class="fl" style="margin-bottom:12px;"><label>Mô tả ngắn</label><textarea id="f-desc" rows="3" placeholder="Mô tả sản phẩm, chức năng, trường hợp ứng dụng..."></textarea></div>
+          <div class="fl"><label>Điểm nổi bật (mỗi dòng 1 điểm)</label><textarea id="f-hl" rows="4" placeholder="Kích thước chính xác phù hợp với ống&#10;Điều chỉnh lưu lượng linh hoạt&#10;Bề mặt mạ kẽm bền bỉ"></textarea></div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico a">🖼</div><div><div class="sc-t">Hình ảnh sản phẩm chính</div></div></div></div>
+        <div class="sc-body">
+          <div class="uz" onclick="triggerUpload('img-main')">
+            <input type="file" id="img-main" accept="image/*" onchange="previewImg(this,'uz-main')">
+            <img id="uz-main" style="display:none">
+            <div class="uz-ico">🖼</div>
+            <div class="uz-txt">Upload hình ảnh chính</div>
+            <div class="uz-hint">PNG, JPG, WEBP · Click để chọn</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P1: SPECIFICATIONS ── -->
+    <div id="p1" class="tds-p">
+      <div class="pdf-sec-t">⚙️ Specifications <span></span></div>
+      <div class="p-hd"><h2>⚙️ Specifications</h2><p>Thông số kỹ thuật & tiêu chuẩn</p></div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico b">📊</div><div><div class="sc-t">Thông số kỹ thuật</div></div></div><button class="btn btn-ghost no-print" onclick="addSpecRow()">+ Thêm</button></div>
+        <div class="sc-body p0">
+          <table class="dt" id="spec-table">
+            <thead><tr><th>Thông số</th><th>Giá trị</th><th>Đơn vị</th><th>Ghi chú</th></tr></thead>
+            <tbody id="spec-body">
+              <tr><td contenteditable>Width</td><td contenteditable>225</td><td contenteditable>mm</td><td contenteditable>—</td></tr>
+              <tr><td contenteditable>Height</td><td contenteditable>75</td><td contenteditable>mm</td><td contenteditable>—</td></tr>
+              <tr><td contenteditable>Nominal Diameter</td><td contenteditable>DN 140</td><td contenteditable>mm</td><td contenteditable>—</td></tr>
+              <tr><td contenteditable>Blade rows</td><td contenteditable>1</td><td contenteditable>row</td><td contenteditable>—</td></tr>
+              <tr><td contenteditable>Blade pitch axial</td><td contenteditable>20</td><td contenteditable>mm</td><td contenteditable>—</td></tr>
+            </tbody>
+          </table>
+          <button class="add-tr-btn no-print" onclick="addSpecRow()">+ Thêm thông số</button>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico g">✅</div><div><div class="sc-t">Tiêu chuẩn & Chứng nhận</div></div></div><button class="btn btn-ghost no-print" onclick="addStdRow()">+ Thêm</button></div>
+        <div class="sc-body p0">
+          <table class="dt" id="std-table">
+            <thead><tr><th>Tiêu chuẩn</th><th>Mô tả</th><th>Trạng thái</th></tr></thead>
+            <tbody id="std-body">
+              <tr><td contenteditable>AMCA 500-D</td><td contenteditable>Air performance testing</td><td><span class="chip ch-g">✓ Đạt</span></td></tr>
+              <tr><td contenteditable>ASHRAE 52.2</td><td contenteditable>Air filtration standard</td><td><span class="chip ch-g">✓ Đạt</span></td></tr>
+              <tr><td contenteditable>SMACNA</td><td contenteditable>Sheet metal construction</td><td><span class="chip ch-a">Đang xét</span></td></tr>
+            </tbody>
+          </table>
+          <button class="add-tr-btn no-print" onclick="addStdRow()">+ Thêm tiêu chuẩn</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P2: DRAWINGS & CAD ── -->
+    <div id="p2" class="tds-p">
+      <div class="pdf-sec-t">📐 Drawings & CAD <span></span></div>
+      <div class="p-hd"><h2>📐 Drawings & CAD</h2><p>Bản vẽ kỹ thuật và file CAD</p></div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico b">📐</div><div><div class="sc-t">Bản vẽ chính</div><div class="sc-s">Main drawing</div></div></div></div>
+        <div class="sc-body">
+          <div class="fg fg2">
+            <div class="uz" onclick="triggerUpload('img-draw')" style="min-height:180px;">
+              <input type="file" id="img-draw" accept="image/*" onchange="previewImg(this,'uz-draw')">
+              <img id="uz-draw" style="display:none">
+              <div class="uz-ico">📐</div>
+              <div class="uz-txt">Upload bản vẽ kỹ thuật</div>
+              <div class="uz-hint">SVG, PNG, PDF</div>
+            </div>
+            <div>
+              <div class="sc" style="margin-bottom:11px;">
+                <div class="sc-body">
+                  <div class="fg" style="gap:9px;">
+                    <div class="fl"><label>Link DXF / AutoCAD</label><input type="url" id="f-dxf" placeholder="https://..."></div>
+                    <div class="fl"><label>Link Revit RFA</label><input type="url" id="f-rfa" placeholder="https://..."></div>
+                    <div class="fl"><label>Link PDF bản vẽ</label><input type="url" id="f-pdf-draw" placeholder="https://..."></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico a">📏</div><div><div class="sc-t">Bảng kích thước</div></div></div><button class="btn btn-ghost no-print" onclick="addDimRow()">+ Thêm</button></div>
+        <div class="sc-body p0">
+          <table class="dt" id="dim-table">
+            <thead><tr><th>Ký hiệu</th><th>Kích thước</th><th>Dung sai</th><th>Ghi chú</th></tr></thead>
+            <tbody id="dim-body">
+              <tr><td contenteditable class="mono">A</td><td contenteditable>225 mm</td><td contenteditable>±0.5</td><td contenteditable>Width ngoài</td></tr>
+              <tr><td contenteditable class="mono">B</td><td contenteditable>75 mm</td><td contenteditable>±0.5</td><td contenteditable>Height ngoài</td></tr>
+              <tr><td contenteditable class="mono">DN</td><td contenteditable>140 mm</td><td contenteditable>±1.0</td><td contenteditable>Đường kính ống</td></tr>
+            </tbody>
+          </table>
+          <button class="add-tr-btn no-print" onclick="addDimRow()">+ Thêm kích thước</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P3: SOP ── -->
+    <div id="p3" class="tds-p">
+      <div class="pdf-sec-t">🏭 Manufacturing SOP <span></span></div>
+      <div class="p-hd"><h2>🏭 Manufacturing SOP</h2><p>Quy trình sản xuất</p></div>
+      <div class="sc" style="margin-bottom:14px;">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico r">⚙️</div><div><div class="sc-t">Thông tin SOP</div></div></div></div>
+        <div class="sc-body">
+          <div class="fg fg4">
+            <div class="fl"><label>Mã SOP</label><input type="text" id="f-sop-code" placeholder="SOP-PRD-001"></div>
+            <div class="fl"><label>Bộ phận</label><input type="text" id="f-sop-dept" placeholder="Xưởng sản xuất"></div>
+            <div class="fl"><label>Chu kỳ sản xuất</label><input type="text" id="f-sop-cycle" placeholder="15 phút / SP"></div>
+            <div class="fl"><label>Lô sản xuất tối thiểu</label><input type="text" id="f-sop-batch" placeholder="50 SP"></div>
+          </div>
+        </div>
+      </div>
+      <div id="sop-steps">
+        <div class="step-c">
+          <div class="step-hd"><div class="step-num">1</div><input class="step-ti" value="Chuẩn bị vật liệu" placeholder="Tên bước"><button class="del-btn no-print" onclick="delStep(this)">✕</button></div>
+          <div class="step-body"><div class="step-desc" contenteditable>Kiểm tra phôi thép tấm mạ kẽm, đo kích thước thực tế, phân loại theo lot. Yêu cầu: độ dày ±0.05mm, bề mặt không xước.</div></div>
+        </div>
+        <div class="step-c">
+          <div class="step-hd"><div class="step-num">2</div><input class="step-ti" value="Cắt (Blanking)" placeholder="Tên bước"><button class="del-btn no-print" onclick="delStep(this)">✕</button></div>
+          <div class="step-body"><div class="step-desc" contenteditable>Cắt phôi theo bản vẽ bằng máy cắt CNC. Kiểm tra kích thước sau cắt. Dung sai: ±0.3mm.</div></div>
+        </div>
+        <div class="step-c">
+          <div class="step-hd"><div class="step-num">3</div><input class="step-ti" value="Uốn (Bending)" placeholder="Tên bước"><button class="del-btn no-print" onclick="delStep(this)">✕</button></div>
+          <div class="step-body"><div class="step-desc" contenteditable>Uốn khung và cánh theo jig mẫu. Kiểm tra góc uốn bằng dưỡng chuẩn. Không chấp nhận biến dạng > 0.2mm.</div></div>
+        </div>
+        <div class="step-c">
+          <div class="step-hd"><div class="step-num">4</div><input class="step-ti" value="Lắp ráp" placeholder="Tên bước"><button class="del-btn no-print" onclick="delStep(this)">✕</button></div>
+          <div class="step-body"><div class="step-desc" contenteditable>Lắp cánh vào khung, điều chỉnh góc cánh, kiểm tra chuyển động trơn. Tán đinh hoặc hàn điểm theo yêu cầu BOM.</div></div>
+        </div>
+      </div>
+      <button class="add-step-btn no-print" onclick="addStep()">+ Thêm bước sản xuất</button>
+    </div>
+
+    <!-- ── P4: BOM ── -->
+    <div id="p4" class="tds-p">
+      <div class="pdf-sec-t">📦 Bill of Materials <span></span></div>
+      <div class="p-hd"><h2>📦 Bill of Materials</h2><p>Danh sách vật tư</p></div>
+      <div class="stat-row g4" id="bom-stats">
+        <div class="stat-m b"><div class="sm-l">Tổng linh kiện</div><div class="sm-v" id="bom-total">6</div><div class="sm-s">Parts</div></div>
+        <div class="stat-m r"><div class="sm-l">Mua ngoài</div><div class="sm-v" id="bom-buy">4</div><div class="sm-s">Purchased</div></div>
+        <div class="stat-m g"><div class="sm-l">Tự sản xuất</div><div class="sm-v" id="bom-make">2</div><div class="sm-s">Make</div></div>
+        <div class="stat-m a"><div class="sm-l">Nhà cung cấp</div><div class="sm-v" id="bom-sups">3</div><div class="sm-s">Suppliers</div></div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico b">📋</div><div><div class="sc-t">Danh sách vật tư</div></div></div>
+          <div style="display:flex;gap:6px;" class="no-print"><button class="btn btn-ghost" onclick="addBomRow()">+ Thêm</button><button class="btn btn-ghost" onclick="exportBOM()">📥 CSV</button></div></div>
+        <div class="sc-body p0">
+          <table class="dt" id="bom-table">
+            <thead><tr><th>#</th><th>Mã / Part No.</th><th>Mô tả</th><th>Vật liệu</th><th>SL</th><th>ĐVT</th><th>NCC</th><th>Loại</th></tr></thead>
+            <tbody id="bom-body">
+              <tr><td class="mono">001</td><td contenteditable>FRAME-NOVA-225</td><td contenteditable>Khung ngoài</td><td contenteditable>GI 0.6mm</td><td contenteditable>1</td><td contenteditable>chiếc</td><td contenteditable>NSCA</td><td><span class="chip ch-g">Make</span></td></tr>
+              <tr><td class="mono">002</td><td contenteditable>BLADE-V-20</td><td contenteditable>Cánh dọc 20mm</td><td contenteditable>GI 0.5mm</td><td contenteditable>8</td><td contenteditable>chiếc</td><td contenteditable>NSCA</td><td><span class="chip ch-g">Make</span></td></tr>
+              <tr><td class="mono">003</td><td contenteditable>RIVET-3.2</td><td contenteditable>Đinh tán Ø3.2</td><td contenteditable>Aluminium</td><td contenteditable>16</td><td contenteditable>chiếc</td><td contenteditable>Minh Phát</td><td><span class="chip ch-b">Buy</span></td></tr>
+              <tr><td class="mono">004</td><td contenteditable>CONN-DN140</td><td contenteditable>Cổ nối ống DN140</td><td contenteditable>GI 0.5mm</td><td contenteditable>1</td><td contenteditable>chiếc</td><td contenteditable>NSCA</td><td><span class="chip ch-g">Make</span></td></tr>
+              <tr><td class="mono">005</td><td contenteditable>SCREW-M4x8</td><td contenteditable>Vít M4x8</td><td contenteditable>Stainless</td><td contenteditable>4</td><td contenteditable>chiếc</td><td contenteditable>An Phát</td><td><span class="chip ch-b">Buy</span></td></tr>
+              <tr><td class="mono">006</td><td contenteditable>LABEL-NSCA</td><td contenteditable>Nhãn NSCA</td><td contenteditable>Nhôm</td><td contenteditable>1</td><td contenteditable>chiếc</td><td contenteditable>In Trần</td><td><span class="chip ch-b">Buy</span></td></tr>
+            </tbody>
+          </table>
+          <button class="add-tr-btn no-print" onclick="addBomRow()">+ Thêm vật tư</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P5: QC ── -->
+    <div id="p5" class="tds-p">
+      <div class="pdf-sec-t">🔍 QC / Standards <span></span></div>
+      <div class="p-hd"><h2>🔍 QC / Standards</h2><p>Kiểm định chất lượng</p></div>
+      <div class="stat-row g4">
+        <div class="stat-m g"><div class="sm-l">Đạt (Pass)</div><div class="sm-v" id="qc-pass">0</div></div>
+        <div class="stat-m r"><div class="sm-l">Không đạt</div><div class="sm-v" id="qc-fail">0</div></div>
+        <div class="stat-m a"><div class="sm-l">Chờ kiểm</div><div class="sm-v" id="qc-pend">0</div></div>
+        <div class="stat-m b"><div class="sm-l">AQL Level</div><div class="sm-v"><input type="text" id="f-aql" value="2.5" style="width:60px;border:none;background:none;font-size:20px;font-weight:800;color:var(--c0);outline:none;padding:0;font-family:inherit;"></div></div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico r">📏</div><div><div class="sc-t">Kiểm tra kích thước</div></div></div><button class="btn btn-ghost no-print" onclick="addQcRow('qc-dim')">+ Thêm</button></div>
+        <div class="sc-body p0">
+          <div class="qc-hd"><span>Hạng mục</span><span>Min</span><span>Max</span><span>Thực tế</span><span>Kết quả</span></div>
+          <div id="qc-dim">
+            <div class="qc-row"><span contenteditable>Width ngoài (A)</span><span contenteditable>224.5</span><span contenteditable>225.5</span><span contenteditable>225.1</span><select class="qc-sel qcs-p" onchange="updateQcStyle(this);calcQC()"><option value="p">Pass</option><option value="f">Fail</option><option value="n">Pending</option></select></div>
+            <div class="qc-row"><span contenteditable>Height ngoài (B)</span><span contenteditable>74.5</span><span contenteditable>75.5</span><span contenteditable>74.9</span><select class="qc-sel qcs-p" onchange="updateQcStyle(this);calcQC()"><option value="p">Pass</option><option value="f">Fail</option><option value="n">Pending</option></select></div>
+            <div class="qc-row"><span contenteditable>Khe hở cánh</span><span contenteditable>19.8</span><span contenteditable>20.2</span><span contenteditable>—</span><select class="qc-sel qcs-n" onchange="updateQcStyle(this);calcQC()"><option value="p">Pass</option><option value="f">Fail</option><option value="n" selected>Pending</option></select></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico g">🌀</div><div><div class="sc-t">Kiểm tra chức năng</div></div></div><button class="btn btn-ghost no-print" onclick="addQcRow('qc-func')">+ Thêm</button></div>
+        <div class="sc-body p0">
+          <div class="qc-hd"><span>Hạng mục</span><span>Min</span><span>Max</span><span>Thực tế</span><span>Kết quả</span></div>
+          <div id="qc-func">
+            <div class="qc-row"><span contenteditable>Chuyển động cánh</span><span contenteditable>Trơn</span><span contenteditable>Không kẹt</span><span contenteditable>—</span><select class="qc-sel qcs-n" onchange="updateQcStyle(this);calcQC()"><option value="p">Pass</option><option value="f">Fail</option><option value="n" selected>Pending</option></select></div>
+            <div class="qc-row"><span contenteditable>Lực tháo lắp</span><span contenteditable>5N</span><span contenteditable>15N</span><span contenteditable>—</span><select class="qc-sel qcs-n" onchange="updateQcStyle(this);calcQC()"><option value="p">Pass</option><option value="f">Fail</option><option value="n" selected>Pending</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P6: MEDIA ── -->
+    <div id="p6" class="tds-p">
+      <div class="pdf-sec-t">🖼 Media <span></span></div>
+      <div class="p-hd"><h2>🖼 Media</h2><p>Hình ảnh và video sản phẩm</p></div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico a">🖼</div><div><div class="sc-t">Thư viện ảnh</div></div></div></div>
+        <div class="sc-body">
+          <div class="fg" style="grid-template-columns:repeat(3,1fr);gap:11px;" id="gallery-grid">
+            <div><div class="uz" onclick="triggerUpload('gal-0')" style="min-height:110px;"><input type="file" id="gal-0" accept="image/*" onchange="previewImg(this,'guz-0')"><img id="guz-0" style="display:none"><div class="uz-ico" style="font-size:16px;">📷</div><div class="uz-txt" style="font-size:11px;">Ảnh 1</div></div></div>
+            <div><div class="uz" onclick="triggerUpload('gal-1')" style="min-height:110px;"><input type="file" id="gal-1" accept="image/*" onchange="previewImg(this,'guz-1')"><img id="guz-1" style="display:none"><div class="uz-ico" style="font-size:16px;">📷</div><div class="uz-txt" style="font-size:11px;">Ảnh 2</div></div></div>
+            <div><div class="uz" onclick="triggerUpload('gal-2')" style="min-height:110px;"><input type="file" id="gal-2" accept="image/*" onchange="previewImg(this,'guz-2')"><img id="guz-2" style="display:none"><div class="uz-ico" style="font-size:16px;">📷</div><div class="uz-txt" style="font-size:11px;">Ảnh 3</div></div></div>
+            <div><div class="uz" onclick="triggerUpload('gal-3')" style="min-height:110px;"><input type="file" id="gal-3" accept="image/*" onchange="previewImg(this,'guz-3')"><img id="guz-3" style="display:none"><div class="uz-ico" style="font-size:16px;">📷</div><div class="uz-txt" style="font-size:11px;">Ảnh 4</div></div></div>
+            <div><div class="uz" onclick="triggerUpload('gal-4')" style="min-height:110px;"><input type="file" id="gal-4" accept="image/*" onchange="previewImg(this,'guz-4')"><img id="guz-4" style="display:none"><div class="uz-ico" style="font-size:16px;">📷</div><div class="uz-txt" style="font-size:11px;">Ảnh 5</div></div></div>
+            <div><div class="uz" onclick="triggerUpload('gal-5')" style="min-height:110px;"><input type="file" id="gal-5" accept="image/*" onchange="previewImg(this,'guz-5')"><img id="guz-5" style="display:none"><div class="uz-ico" style="font-size:16px;">📷</div><div class="uz-txt" style="font-size:11px;">Ảnh 6</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico r">▶️</div><div><div class="sc-t">Video</div></div></div></div>
+        <div class="sc-body">
+          <div class="fg fg2">
+            <div class="fl"><label>YouTube / Vimeo URL 1</label><input type="url" id="vid1" placeholder="https://youtube.com/watch?v=..." oninput="embedVid(this,'vemb1')"></div>
+            <div class="fl"><label>YouTube / Vimeo URL 2</label><input type="url" id="vid2" placeholder="https://youtube.com/watch?v=..." oninput="embedVid(this,'vemb2')"></div>
+          </div>
+          <div class="fg fg2" style="margin-top:11px;">
+            <div id="vemb1"></div>
+            <div id="vemb2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- tds-panels -->
+  </div><!-- tds-main -->
+</div><!-- tds -->
+</div><!-- v-tds -->
+
+<!-- MODAL: Add product -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h3>➕ Thêm sản phẩm mới</h3>
+    <div class="fg" style="gap:12px;">
+      <div class="fl"><label>Tên sản phẩm *</label><input id="m-name" type="text" placeholder="VD: NOVA-C-1-225x75-V-ZN"></div>
+      <div class="fl"><label>Mã sản phẩm / Art. No. *</label><input id="m-art" type="text" placeholder="VD: 40775"></div>
+      <div class="fl"><label>Mô tả ngắn</label><input id="m-desc" type="text" placeholder="VD: Cửa gió khuếch tán cho ống tròn, 1 hàng cánh dọc"></div>
+      <div class="fl"><label>Tags (cách nhau bởi dấu phẩy)</label><input id="m-tags" type="text" placeholder="VD: 225×75, Supply, DN140"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-r" onclick="createProduct()">Tạo sản phẩm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════ DATA STORE ═══════════ */
+let DATA = {
+  currentIndustry: null,
+  currentGroup: null,
+  currentProd: null,
+  products: JSON.parse(localStorage.getItem('nsca-prods') || '{}'),
+  filter: 'all'
+};
+
+const GROUPS = {
+  hvac: [
+    { id:'grilles', icon:'⊞', name:'Cửa gió khuếch tán', desc:'Circular & rectangular duct grilles — NOVA series', badge:'NOVA' },
+    { id:'diffusers', icon:'◎', name:'Bộ khuếch tán trần', desc:'Ceiling square, round & linear diffusers', badge:'DIFF' },
+    { id:'dampers', icon:'▤', name:'Van điều tiết', desc:'Volume control dampers, butterfly dampers', badge:'VCD' },
+    { id:'accessories', icon:'🔧', name:'Phụ kiện', desc:'Mounting brackets, flexible connectors', badge:'ACC' }
+  ],
+  fire: [
+    { id:'firedampers', icon:'🔥', name:'Van chặn lửa FD', desc:'Fire dampers EI 30/60/90/120', badge:'FD' },
+    { id:'smokedampers', icon:'💨', name:'Van chặn khói SD', desc:'Smoke & combination fire-smoke dampers', badge:'SD' },
+    { id:'firelouvers', icon:'🛡', name:'Cửa gió chịu lửa', desc:'Fire-rated grilles EI 30/60', badge:'EI' }
+  ],
+  vav: [
+    { id:'vavbox', icon:'⬡', name:'Hộp VAV', desc:'STARDUCT-BELIMO variable air volume boxes', badge:'VAV' },
+    { id:'vcdei', icon:'⎇', name:'Van VCD EI', desc:'Fire rated volume control dampers', badge:'VCD-EI' }
+  ]
+};
+
+function save() {
+  localStorage.setItem('nsca-prods', JSON.stringify(DATA.products));
+  updateKPI();
+}
+
+function updateKPI() {
+  const all = Object.values(DATA.products);
+  document.getElementById('kpi-prods').textContent = all.length;
+  document.getElementById('kpi-done').textContent = all.filter(p=>p.status==='approved').length;
+}
+
+/* ═══════════ NAVIGATION ═══════════ */
+function goView(id) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('act'));
+  document.getElementById('v-'+id).classList.add('act');
+  updateCrumb(id);
+}
+
+function updateCrumb(view) {
+  const c = document.getElementById('crumb');
+  let html = '<span class="tbc act" onclick="goView(\'dash\')">Dashboard</span>';
+  if(view==='ind' && DATA.currentIndustry) {
+    html += '<span class="tbc-sep">›</span><span class="tbc act">' + DATA.currentIndustry.name + '</span>';
+  }
+  if(view==='prods' && DATA.currentGroup) {
+    html += '<span class="tbc-sep">›</span><span class="tbc" onclick="goView(\'ind\')">' + DATA.currentIndustry.name + '</span>';
+    html += '<span class="tbc-sep">›</span><span class="tbc act">' + DATA.currentGroup.name + '</span>';
+  }
+  if(view==='tds' && DATA.currentProd) {
+    html += '<span class="tbc-sep">›</span><span class="tbc" onclick="goView(\'ind\')">' + DATA.currentIndustry.name + '</span>';
+    html += '<span class="tbc-sep">›</span><span class="tbc" onclick="goView(\'prods\')">' + DATA.currentGroup.name + '</span>';
+    html += '<span class="tbc-sep">›</span><span class="tbc act">' + (DATA.currentProd.name||'New Product') + '</span>';
+  }
+  c.innerHTML = html;
+}
+
+/* ═══════════ INDUSTRY → GROUP ═══════════ */
+function goIndustry(id, icon, name, desc) {
+  DATA.currentIndustry = { id, icon, name, desc };
+  document.getElementById('ind-ico').textContent = icon;
+  document.getElementById('ind-title').textContent = name;
+  document.getElementById('ind-desc').textContent = desc;
+  const grid = document.getElementById('grp-grid');
+  grid.innerHTML = (GROUPS[id]||[]).map(g => `
+    <div class="grp-c" onclick="goGroup('${g.id}','${g.icon}','${g.name}','${g.desc}')">
+      <div class="grp-thumb">
+        <div style="font-size:28px">${g.icon}</div>
+        <div class="grp-badge">${g.badge}</div>
+      </div>
+      <div class="grp-body">
+        <div class="grp-name">${g.name}</div>
+        <div class="grp-desc">${g.desc}</div>
+        <div class="grp-ft">
+          <span class="grp-cnt">${countProducts(g.id)} sản phẩm</span>
+          <span class="grp-arrow">→</span>
+        </div>
+      </div>
+    </div>`).join('');
+  goView('ind');
+}
+
+function countProducts(groupId) {
+  return Object.values(DATA.products).filter(p=>p.group===groupId).length;
+}
+
+/* ═══════════ GROUP → PRODUCT LIST ═══════════ */
+function goGroup(id, icon, name, desc) {
+  DATA.currentGroup = { id, icon, name, desc };
+  document.getElementById('grp-ico').textContent = icon;
+  document.getElementById('grp-title').textContent = name;
+  document.getElementById('grp-desc').textContent = desc;
+  DATA.filter = 'all';
+  document.querySelectorAll('.fc').forEach(f=>{f.classList.remove('on');});
+  document.querySelector('.fc').classList.add('on');
+  renderProdList();
+  goView('prods');
+}
+
+function renderProdList() {
+  const grid = document.getElementById('prod-grid');
+  const q = (document.getElementById('prod-search').value||'').toLowerCase();
+  const prods = Object.entries(DATA.products)
+    .filter(([id,p]) => p.group === DATA.currentGroup.id)
+    .filter(([id,p]) => DATA.filter==='all' || p.status===DATA.filter)
+    .filter(([id,p]) => !q || (p.name||'').toLowerCase().includes(q) || (p.art||'').includes(q));
+
+  let html = prods.map(([id,p]) => {
+    const pct = calcProdCompletion(p);
+    return `<div class="prod-c" onclick="openProduct('${id}')">
+      <div class="prod-img">
+        ${p.imgMain ? `<img src="${p.imgMain}">` : '<span>'+((DATA.currentGroup||{}).icon||'📦')+'</span>'}
+        <span class="prod-status st-${p.status||'draft'}">${{draft:'Draft',review:'In Review',approved:'Approved'}[p.status||'draft']}</span>
+      </div>
+      <div class="prod-body">
+        <div class="prod-code">Art. ${p.art||'—'}</div>
+        <div class="prod-name">${p.name||'Chưa đặt tên'}</div>
+        <div class="prod-tags">${(p.tags||[]).map(t=>`<span class="ptag">${t}</span>`).join('')}</div>
+        <div class="prod-prog"><div class="prod-bar"><div class="prod-bar-f" style="width:${pct}%"></div></div><span class="prod-pct">${pct}%</span></div>
+      </div>
+      <div class="prod-ft"><span class="art">${p.art||'—'}</span><span>${p.status==='approved'?'✓ Done':'Đang điền'}</span></div>
+    </div>`;
+  }).join('');
+
+  html += `<div class="prod-c prod-add" onclick="showAddModal()">
+    <div class="prod-add-ico">+</div>
+    <span>Thêm sản phẩm</span>
+  </div>`;
+  grid.innerHTML = html;
+}
+
+function setFilter(el, val) {
+  DATA.filter = val;
+  document.querySelectorAll('.fc').forEach(f=>f.classList.remove('on'));
+  el.classList.add('on');
+  renderProdList();
+}
+function filterProds() { renderProdList(); }
+
+/* ═══════════ OPEN PRODUCT ═══════════ */
+function openProduct(id) {
+  DATA.currentProd = { id, ...DATA.products[id] };
+  loadTDS(DATA.currentProd);
+  goView('tds');
+  updateCrumb('tds');
+}
+
+function loadTDS(p) {
+  document.getElementById('sb-name').textContent = p.name||'—';
+  document.getElementById('sb-code').textContent = 'Art. '+(p.art||'—');
+  document.getElementById('f-name').value = p.name||'';
+  document.getElementById('f-art').value = p.art||'';
+  document.getElementById('f-rev').value = p.rev||'';
+  document.getElementById('f-status').value = p.status||'draft';
+  document.getElementById('f-app').value = p.app||'';
+  document.getElementById('f-series').value = p.series||'';
+  document.getElementById('f-desc').value = p.desc||'';
+  document.getElementById('f-hl').value = p.highlights||'';
+  // Load saved image
+  if(p.imgMain) { const img=document.getElementById('uz-main'); img.src=p.imgMain; img.style.display='block'; }
+  else { const img=document.getElementById('uz-main'); img.style.display='none'; }
+  calcCompletion();
+  calcQC();
+}
+
+function calcProdCompletion(p) {
+  let score = 0;
+  if(p.name) score++;
+  if(p.art) score++;
+  if(p.desc) score++;
+  if(p.highlights) score++;
+  if(p.imgMain) score++;
+  if(p.status==='approved') score += 2;
+  return Math.round((score/7)*100);
+}
+
+/* ═══════════ TDS PANEL NAV ═══════════ */
+function goPanel(id, el) {
+  document.querySelectorAll('.tds-p').forEach(p=>p.classList.remove('act'));
+  document.getElementById(id).classList.add('act');
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('act'));
+  el.classList.add('act');
+  calcCompletion();
+}
+
+function calcCompletion() {
+  const fields = ['f-name','f-art','f-rev','f-desc','f-hl','f-app'];
+  let done = 0;
+  fields.forEach(id => { if((document.getElementById(id)||{}).value) done++; });
+  if(document.getElementById('uz-main').style.display!=='none') done++;
+  const total = fields.length + 1;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('comp-pct').textContent = pct + '%';
+  document.getElementById('comp-fill').style.width = pct + '%';
+  // Mark done tabs
+  const nav = document.getElementById('sb-nav');
+  const p0done = (document.getElementById('f-name').value && document.getElementById('f-desc').value);
+  const items = nav.querySelectorAll('.sb-item');
+  if(p0done) items[0].classList.add('done'); else items[0].classList.remove('done');
+}
+
+/* ═══════════ SYNC FIELDS ═══════════ */
+function syncName() {
+  const v = document.getElementById('f-name').value;
+  document.getElementById('sb-name').textContent = v||'—';
+  if(DATA.currentProd) DATA.currentProd.name = v;
+  calcCompletion();
+}
+function syncCode() {
+  const v = document.getElementById('f-art').value;
+  document.getElementById('sb-code').textContent = 'Art. '+(v||'—');
+  if(DATA.currentProd) DATA.currentProd.art = v;
+}
+function syncStatus() {
+  const v = document.getElementById('f-status').value;
+  if(DATA.currentProd) DATA.currentProd.status = v;
+}
+
+/* ═══════════ SAVE ═══════════ */
+function saveProduct() {
+  if(!DATA.currentProd) return;
+  const id = DATA.currentProd.id;
+  DATA.products[id] = {
+    ...DATA.products[id],
+    group: DATA.currentGroup?.id,
+    name: document.getElementById('f-name').value,
+    art: document.getElementById('f-art').value,
+    rev: document.getElementById('f-rev').value,
+    status: document.getElementById('f-status').value,
+    app: document.getElementById('f-app').value,
+    series: document.getElementById('f-series').value,
+    desc: document.getElementById('f-desc').value,
+    highlights: document.getElementById('f-hl').value,
+    tags: (document.getElementById('f-hl').value||'').split('\n').slice(0,3),
+    imgMain: document.getElementById('uz-main').src||null
+  };
+  save();
+  alert('✅ Đã lưu sản phẩm!');
+}
+
+/* ═══════════ ADD PRODUCT MODAL ═══════════ */
+function showAddModal() {
+  document.getElementById('add-modal').classList.add('show');
+  document.getElementById('m-name').focus();
+}
+function closeModal() {
+  document.getElementById('add-modal').classList.remove('show');
+}
+function createProduct() {
+  const name = document.getElementById('m-name').value.trim();
+  if(!name) { alert('Vui lòng nhập tên sản phẩm!'); return; }
+  const id = 'prod_' + Date.now();
+  const art = document.getElementById('m-art').value.trim();
+  const desc = document.getElementById('m-desc').value.trim();
+  const tags = document.getElementById('m-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  DATA.products[id] = { group: DATA.currentGroup.id, name, art, desc, tags, status:'draft' };
+  save();
+  closeModal();
+  document.getElementById('m-name').value='';
+  document.getElementById('m-art').value='';
+  document.getElementById('m-desc').value='';
+  document.getElementById('m-tags').value='';
+  renderProdList();
+  openProduct(id);
+}
+
+/* ═══════════ TABLE HELPERS ═══════════ */
+function addSpecRow() {
+  const tb = document.getElementById('spec-body');
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td contenteditable>Thông số</td><td contenteditable>—</td><td contenteditable>—</td><td contenteditable>—</td>';
+  tb.appendChild(tr);
+}
+function addStdRow() {
+  const tb = document.getElementById('std-body');
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td contenteditable>Tiêu chuẩn</td><td contenteditable>Mô tả</td><td><span class="chip ch-a">Đang xét</span></td>';
+  tb.appendChild(tr);
+}
+function addDimRow() {
+  const tb = document.getElementById('dim-body');
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td contenteditable class="mono">X</td><td contenteditable>—</td><td contenteditable>±0.5</td><td contenteditable>—</td>';
+  tb.appendChild(tr);
+}
+function addBomRow() {
+  const tb = document.getElementById('bom-body');
+  const n = tb.children.length + 1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="mono">${String(n).padStart(3,'0')}</td><td contenteditable>PART-XXX</td><td contenteditable>Mô tả</td><td contenteditable>—</td><td contenteditable>1</td><td contenteditable>chiếc</td><td contenteditable>—</td><td><span class="chip ch-b">Buy</span></td>`;
+  tb.appendChild(tr);
+}
+
+/* ═══════════ SOP STEPS ═══════════ */
+function addStep() {
+  const cont = document.getElementById('sop-steps');
+  const n = cont.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'step-c';
+  div.innerHTML = `<div class="step-hd"><div class="step-num">${n}</div><input class="step-ti" value="Bước ${n}" placeholder="Tên bước"><button class="del-btn no-print" onclick="delStep(this)">✕</button></div><div class="step-body"><div class="step-desc" contenteditable>Mô tả bước sản xuất...</div></div>`;
+  cont.appendChild(div);
+  renumSteps();
+}
+function delStep(btn) {
+  btn.closest('.step-c').remove();
+  renumSteps();
+}
+function renumSteps() {
+  document.querySelectorAll('#sop-steps .step-num').forEach((n,i)=>n.textContent=i+1);
+}
+
+/* ═══════════ QC ═══════════ */
+function addQcRow(containerId) {
+  const cont = document.getElementById(containerId);
+  const div = document.createElement('div');
+  div.className = 'qc-row';
+  div.innerHTML = '<span contenteditable>Hạng mục mới</span><span contenteditable>—</span><span contenteditable>—</span><span contenteditable>—</span><select class="qc-sel qcs-n" onchange="updateQcStyle(this);calcQC()"><option value="p">Pass</option><option value="f">Fail</option><option value="n" selected>Pending</option></select>';
+  cont.appendChild(div);
+  calcQC();
+}
+function updateQcStyle(sel) {
+  sel.className = 'qc-sel ' + {p:'qcs-p',f:'qcs-f',n:'qcs-n'}[sel.value];
+}
+function calcQC() {
+  const sels = document.querySelectorAll('.qc-sel');
+  let p=0,f=0,n=0;
+  sels.forEach(s => { if(s.value==='p')p++; else if(s.value==='f')f++; else n++; });
+  document.getElementById('qc-pass').textContent = p;
+  document.getElementById('qc-fail').textContent = f;
+  document.getElementById('qc-pend').textContent = n;
+}
+
+/* ═══════════ UPLOAD / IMAGE ═══════════ */
+function triggerUpload(id) {
+  document.getElementById(id).click();
+}
+function previewImg(input, imgId) {
+  const file = input.files[0];
+  if(!file) return;
+  const r = new FileReader();
+  r.onload = e => {
+    const img = document.getElementById(imgId);
+    img.src = e.target.result;
+    img.style.display = 'block';
+    if(imgId==='uz-main' && DATA.currentProd) DATA.currentProd.imgMain = e.target.result;
+    calcCompletion();
+  };
+  r.readAsDataURL(file);
+}
+
+/* ═══════════ VIDEO EMBED ═══════════ */
+function embedVid(inp, divId) {
+  let url = inp.value;
+  let embed = '';
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]+)/);
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if(ytMatch) embed = `<iframe width="100%" height="160" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
+  else if(vimeoMatch) embed = `<iframe width="100%" height="160" src="https://player.vimeo.com/video/${vimeoMatch[1]}" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>`;
+  document.getElementById(divId).innerHTML = embed;
+}
+
+/* ═══════════ EXPORT CSV (BOM) ═══════════ */
+function exportBOM() {
+  const rows = document.querySelectorAll('#bom-body tr');
+  let csv = 'No,Part No,Description,Material,Qty,Unit,Supplier,Type\n';
+  rows.forEach(tr => {
+    const cells = tr.querySelectorAll('td');
+    const row = [cells[0]?.textContent, cells[1]?.textContent, cells[2]?.textContent, cells[3]?.textContent, cells[4]?.textContent, cells[5]?.textContent, cells[6]?.textContent, cells[7]?.querySelector('.chip')?.textContent||''];
+    csv += row.map(c=>`"${(c||'').trim()}"`).join(',') + '\n';
+  });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + csv;
+  a.download = 'BOM_' + (DATA.currentProd?.name||'product') + '.csv';
+  a.click();
+}
+
+/* ═══════════ PDF EXPORT — redirected to preview ═══════════ */
+// exportPDF is now defined below with preview modal
+
+/* ═══════════ INIT ═══════════ */
+updateKPI();
+calcQC();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════
+   I18N — BILINGUAL SUPPORT (VI / EN)
+═══════════════════════════════════════════ */
+let LANG = localStorage.getItem('nsca-lang') || 'vi';
+
+const T = {
+  vi: {
+    dashboard: 'Dashboard', 'sys-hvac': 'Hệ thống HVAC',
+    'nav-overview': 'Overview', 'nav-specs': 'Thông số kỹ thuật',
+    'nav-drawings': 'Bản vẽ & CAD', 'nav-sop': 'Quy trình sản xuất',
+    'nav-bom': 'Danh sách vật tư', 'nav-qc': 'QC / Kiểm định', 'nav-media': 'Media',
+    'btn-export': '🖨 Xuất PDF A4', 'btn-save': '💾 Lưu', 'btn-back': '← Danh sách SP',
+    'role-admin': '🔴 Quản trị viên', 'role-viewer': '🔵 Người xem toàn bộ', 'role-guest': '⚪ Người xem cơ bản',
+    'status-draft': 'Bản nháp', 'status-review': 'Đang xét duyệt', 'status-approved': 'Đã phê duyệt',
+    'pdf-cover-title': 'Technical Data Sheet',
+    'kpi-ind': 'Nhóm ngành', 'kpi-grp': 'Nhóm sản phẩm', 'kpi-prod': 'Sản phẩm', 'kpi-done': 'TDS hoàn thiện',
+    'hero-sub': 'NSCA — Ngôi Sao Châu Á · Hệ thống tài liệu kỹ thuật sản phẩm MEP',
+  },
+  en: {
+    dashboard: 'Dashboard', 'sys-hvac': 'HVAC System',
+    'nav-overview': 'Overview', 'nav-specs': 'Specifications',
+    'nav-drawings': 'Drawings & CAD', 'nav-sop': 'Manufacturing SOP',
+    'nav-bom': 'Bill of Materials', 'nav-qc': 'QC / Standards', 'nav-media': 'Media',
+    'btn-export': '🖨 Export PDF A4', 'btn-save': '💾 Save', 'btn-back': '← Product List',
+    'role-admin': '🔴 Administrator', 'role-viewer': '🔵 Full Viewer', 'role-guest': '⚪ Basic Viewer',
+    'status-draft': 'Draft', 'status-review': 'In Review', 'status-approved': 'Approved',
+    'pdf-cover-title': 'Technical Data Sheet',
+    'kpi-ind': 'Industry Groups', 'kpi-grp': 'Product Groups', 'kpi-prod': 'Products', 'kpi-done': 'TDS Approved',
+    'hero-sub': 'NSCA — Ngoi Sao Chau A · MEP Technical Product Documentation System',
+  }
+};
+
+function t(key) { return T[LANG][key] || T['vi'][key] || key; }
+
+function applyLang() {
+  document.querySelectorAll('[data-vi]').forEach(el => {
+    el.textContent = el.getAttribute('data-' + LANG) || el.getAttribute('data-vi');
+  });
+  document.getElementById('lang-btn').textContent = '🌐 ' + LANG.toUpperCase();
+  // Update sidebar nav labels
+  const navLabels = [
+    [0,'nav-overview'],[1,'nav-specs'],[2,'nav-drawings'],[3,'nav-sop'],
+    [4,'nav-bom'],[5,'nav-qc'],[6,'nav-media']
+  ];
+  const navItems = document.querySelectorAll('.sb-item');
+  navLabels.forEach(([i, key]) => {
+    if(navItems[i]) {
+      const ico = navItems[i].querySelector('.sb-ico');
+      const ck = navItems[i].querySelector('.sb-ck');
+      navItems[i].textContent = '';
+      if(ico) navItems[i].appendChild(ico);
+      navItems[i].appendChild(document.createTextNode(t(key)));
+      if(ck) navItems[i].appendChild(ck);
+    }
+  });
+  // Export button
+  const exportBtn = document.querySelector('.sb-btn-r');
+  if(exportBtn) exportBtn.textContent = t('btn-export');
+  const saveBtn = document.querySelector('.sb-btn-n');
+  if(saveBtn) saveBtn.textContent = t('btn-save');
+  // KPI cards
+  const kpiNames = document.querySelectorAll('.kpi-n');
+  const kpiKeys = ['kpi-ind','kpi-grp','kpi-prod','kpi-done'];
+  kpiNames.forEach((el, i) => { if(kpiKeys[i]) el.textContent = t(kpiKeys[i]); });
+  // Hero subtitle
+  const heroSub = document.querySelector('.dash-hero p');
+  if(heroSub) heroSub.textContent = t('hero-sub');
+}
+
+function toggleLang() {
+  LANG = LANG === 'vi' ? 'en' : 'vi';
+  localStorage.setItem('nsca-lang', LANG);
+  applyLang();
+}
+
+/* ═══════════════════════════════════════════
+   AUTH SYSTEM
+═══════════════════════════════════════════ */
+// Role: 1=Admin, 2=Full Viewer, 3=Basic Viewer (no SOP/BOM)
+const ROLE_LABELS = { 1: t('role-admin'), 2: t('role-viewer'), 3: t('role-guest') };
+const ROLE_COLORS = { 1: '#dc2626', 2: '#2563eb', 3: '#6b7280' };
+
+// Built-in demo accounts (stored in memory; real ones persist in localStorage)
+const DEMO_ACCOUNTS = [
+  { username: 'admin', password: 'admin123', name: 'Admin NSCA', dept: 'R&D', email: 'admin@nsca.vn', role: 1, approved: true },
+  { username: 'viewer', password: 'view123', name: 'Kỹ sư thiết kế', dept: 'R&D', email: 'rd@nsca.vn', role: 2, approved: true },
+  { username: 'guest', password: 'guest123', name: 'Nhân viên QC', dept: 'QC', email: 'qc@nsca.vn', role: 3, approved: true },
+];
+
+let currentUser = null;
+
+function getAccounts() {
+  const saved = localStorage.getItem('nsca-accounts');
+  const saved_accounts = saved ? JSON.parse(saved) : [];
+  return [...DEMO_ACCOUNTS, ...saved_accounts];
+}
+function getSavedAccounts() {
+  const saved = localStorage.getItem('nsca-accounts');
+  return saved ? JSON.parse(saved) : [];
+}
+function saveAccounts(accounts) {
+  localStorage.setItem('nsca-accounts', JSON.stringify(accounts));
+}
+function getPending() {
+  const saved = localStorage.getItem('nsca-pending');
+  return saved ? JSON.parse(saved) : [];
+}
+function savePending(arr) { localStorage.setItem('nsca-pending', JSON.stringify(arr)); }
+
+function switchAuthTab(tab) {
+  document.getElementById('apanel-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('apanel-reg').style.display = tab === 'reg' ? 'block' : 'none';
+  const loginTab = document.getElementById('atab-login');
+  const regTab = document.getElementById('atab-reg');
+  if(tab === 'login') {
+    loginTab.style.cssText = 'flex:1;padding:12px;background:rgba(220,38,38,.15);border:none;color:#dc2626;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border-bottom:2px solid #dc2626;';
+    regTab.style.cssText = 'flex:1;padding:12px;background:transparent;border:none;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;';
+  } else {
+    regTab.style.cssText = 'flex:1;padding:12px;background:rgba(37,99,235,.15);border:none;color:#2563eb;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border-bottom:2px solid #2563eb;';
+    loginTab.style.cssText = 'flex:1;padding:12px;background:transparent;border:none;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;';
+  }
+}
+
+function doLogin() {
+  const user = document.getElementById('a-login-user').value.trim();
+  const pass = document.getElementById('a-login-pass').value;
+  const errEl = document.getElementById('login-err');
+  errEl.style.display = 'none';
+
+  const all = getAccounts();
+  const found = all.find(a => a.username === user && a.password === pass);
+  if(!found) { showLoginErr(LANG==='vi' ? 'Sai tên đăng nhập hoặc mật khẩu' : 'Invalid username or password'); return; }
+  
+  // Check pending
+  const pending = getPending();
+  if(pending.find(p => p.username === user)) {
+    showLoginErr(LANG==='vi' ? 'Tài khoản đang chờ phê duyệt từ Admin' : 'Account pending Admin approval'); return;
+  }
+  if(!found.approved) { showLoginErr(LANG==='vi' ? 'Tài khoản chưa được phê duyệt' : 'Account not approved'); return; }
+
+  currentUser = found;
+  localStorage.setItem('nsca-session', JSON.stringify({ username: found.username, ts: Date.now() }));
+  
+  document.getElementById('auth-overlay').style.display = 'none';
+  document.getElementById('tb-user-info').style.display = 'flex';
+  document.getElementById('tb-avatar').textContent = found.name.charAt(0).toUpperCase();
+  document.getElementById('tb-avatar').style.background = ROLE_COLORS[found.role];
+  document.getElementById('tb-uname').textContent = found.name;
+  document.getElementById('tb-urole').textContent = getRoleLabel(found.role);
+
+  applyPermissions(found.role);
+  applyLang();
+
+  // Add admin controls if admin
+  if(found.role === 1) addAdminButtons();
+}
+
+function showLoginErr(msg) {
+  const e = document.getElementById('login-err');
+  e.textContent = msg; e.style.display = 'block';
+}
+
+function doRegister() {
+  const name = document.getElementById('a-reg-name').value.trim();
+  const dept = document.getElementById('a-reg-dept').value.trim();
+  const user = document.getElementById('a-reg-user').value.trim();
+  const pass = document.getElementById('a-reg-pass').value;
+  const email = document.getElementById('a-reg-email').value.trim();
+  const errEl = document.getElementById('reg-err');
+  errEl.style.display = 'none';
+
+  if(!name||!user||!pass) { errEl.textContent = LANG==='vi'?'Vui lòng điền đầy đủ thông tin bắt buộc':'Please fill all required fields'; errEl.style.display='block'; return; }
+  if(pass.length < 6) { errEl.textContent = LANG==='vi'?'Mật khẩu tối thiểu 6 ký tự':'Password must be at least 6 characters'; errEl.style.display='block'; return; }
+  
+  const all = getAccounts();
+  if(all.find(a=>a.username===user)) { errEl.textContent = LANG==='vi'?'Tên đăng nhập đã tồn tại':'Username already exists'; errEl.style.display='block'; return; }
+
+  const pending = getPending();
+  if(pending.find(p=>p.username===user)) { errEl.textContent = LANG==='vi'?'Tài khoản đang chờ phê duyệt':'Already pending approval'; errEl.style.display='block'; return; }
+
+  const newAcc = { username: user, password: pass, name, dept, email, role: 3, approved: false, regDate: new Date().toLocaleDateString('vi-VN') };
+  pending.push(newAcc);
+  savePending(pending);
+
+  // Success
+  document.getElementById('apanel-reg').innerHTML = `
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:40px;margin-bottom:12px;">✅</div>
+      <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;">${LANG==='vi'?'Đăng ký thành công!':'Registration Submitted!'}</div>
+      <div style="font-size:12px;color:#6b7280;line-height:1.7;">${LANG==='vi'?'Yêu cầu của bạn đã được ghi nhận.<br>Vui lòng chờ Admin phê duyệt tài khoản.':'Your request has been recorded.<br>Please wait for Admin approval.'}</div>
+      <button onclick="switchAuthTab('login')" style="margin-top:16px;background:#2563eb;border:none;color:#fff;padding:9px 20px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;">${LANG==='vi'?'← Về đăng nhập':'← Back to Login'}</button>
+    </div>`;
+}
+
+function doLogout() {
+  currentUser = null;
+  localStorage.removeItem('nsca-session');
+  document.getElementById('auth-overlay').style.display = 'flex';
+  document.getElementById('tb-user-info').style.display = 'none';
+  // Reset fields
+  document.getElementById('a-login-user').value = '';
+  document.getElementById('a-login-pass').value = '';
+  // Re-enable hidden elements
+  document.querySelectorAll('[data-perm-hide]').forEach(el => el.style.display = '');
+}
+
+function getRoleLabel(role) {
+  const labels = { 1: '🔴 Quản trị viên', 2: '🔵 Xem toàn bộ', 3: '⚪ Xem cơ bản' };
+  const labelsEn = { 1: '🔴 Administrator', 2: '🔵 Full Viewer', 3: '⚪ Basic Viewer' };
+  return (LANG === 'en' ? labelsEn : labels)[role] || '—';
+}
+
+function applyPermissions(role) {
+  // Role 3: hide SOP and BOM panels + their nav items
+  if(role === 3) {
+    // Hide nav items for SOP (p3) and BOM (p4)
+    document.querySelectorAll('.sb-item').forEach(item => {
+      const p = item.getAttribute('data-p');
+      if(p === 'p3' || p === 'p4') {
+        item.style.opacity = '.3';
+        item.style.pointerEvents = 'none';
+        item.title = LANG==='vi' ? 'Bạn không có quyền truy cập mục này' : 'No access to this section';
+        item.setAttribute('data-perm-hide', '1');
+      }
+    });
+    // Lock panels
+    ['p3','p4'].forEach(pid => {
+      const panel = document.getElementById(pid);
+      if(panel) {
+        panel.innerHTML = `<div style="padding:40px;text-align:center;"><div style="font-size:36px;margin-bottom:12px;">🔒</div><div style="font-size:14px;font-weight:700;color:#374151;margin-bottom:6px;">${LANG==='vi'?'Nội dung bị giới hạn quyền truy cập':'Access Restricted'}</div><div style="font-size:12px;color:#6b7280;">${LANG==='vi'?'Bạn không có quyền xem mục này. Liên hệ Admin để nâng cấp tài khoản.':'You do not have permission to view this section. Contact Admin to upgrade.'}</div></div>`;
+        panel.setAttribute('data-perm-hide', '1');
+      }
+    });
+    // Hide in PDF picker
+    PDF_SECTIONS.forEach(s => { if(s.id==='sop'||s.id==='bom') s.hidden = true; });
+  }
+  // Role 2 & 1: full access (no restriction)
+  if(role === 1 || role === 2) {
+    document.querySelectorAll('[data-perm-hide]').forEach(el => {
+      el.style.opacity = '';
+      el.style.pointerEvents = '';
+      el.removeAttribute('data-perm-hide');
+    });
+    PDF_SECTIONS.forEach(s => { s.hidden = false; });
+  }
+}
+
+function addAdminButtons() {
+  // Add manage users button to dashboard hero
+  const dashHero = document.querySelector('.dash-hero');
+  if(dashHero && !document.getElementById('admin-user-btn')) {
+    const btn = document.createElement('button');
+    btn.id = 'admin-user-btn';
+    btn.className = 'btn btn-ghost';
+    btn.style = 'margin-top:8px;margin-left:8px;';
+    btn.innerHTML = '👥 ' + (LANG==='vi'?'Quản lý tài khoản':'User Management');
+    btn.onclick = openUserMgmt;
+    dashHero.appendChild(btn);
+  }
+}
+
+// Auto-restore session
+(function restoreSession() {
+  const sess = localStorage.getItem('nsca-session');
+  if(sess) {
+    try {
+      const s = JSON.parse(sess);
+      // Session valid for 8 hours
+      if(Date.now() - s.ts < 8*60*60*1000) {
+        const all = getAccounts();
+        const u = all.find(a => a.username === s.username && a.approved);
+        if(u) { document.getElementById('a-login-user').value = u.username; document.getElementById('a-login-pass').value = u.password; doLogin(); return; }
+      }
+    } catch(e) {}
+    localStorage.removeItem('nsca-session');
+  }
+})();
+
+/* ═══════════════════════════════════════════
+   USER MANAGEMENT (ADMIN)
+═══════════════════════════════════════════ */
+function openUserMgmt() {
+  renderUserMgmt();
+  const modal = document.getElementById('user-mgmt-modal');
+  modal.style.display = 'flex';
+}
+function closeUserMgmt() {
+  document.getElementById('user-mgmt-modal').style.display = 'none';
+}
+
+function renderUserMgmt() {
+  const pending = getPending();
+  const approved = getSavedAccounts().filter(a => a.approved);
+
+  const roleSelect = (username, currentRole) => `
+    <select onchange="changeUserRole('${username}', this.value)" style="border:1px solid #e5e7eb;border-radius:6px;padding:4px 8px;font-size:11.5px;font-family:inherit;color:#374151;">
+      <option value="1" ${currentRole==1?'selected':''}>🔴 ${LANG==='vi'?'Quản trị viên':'Administrator'}</option>
+      <option value="2" ${currentRole==2?'selected':''}>🔵 ${LANG==='vi'?'Xem toàn bộ':'Full Viewer'}</option>
+      <option value="3" ${currentRole==3?'selected':''}>⚪ ${LANG==='vi'?'Xem cơ bản':'Basic Viewer'}</option>
+    </select>`;
+
+  const userRow = (u, isPending) => `
+    <div style="display:grid;grid-template-columns:1fr 120px 140px 120px;gap:10px;align-items:center;padding:10px 14px;background:${isPending?'#fffbeb':'#f9fafb'};border:1px solid ${isPending?'#fde68a':'#e5e7eb'};border-radius:8px;margin-bottom:7px;">
+      <div>
+        <div style="font-size:12.5px;font-weight:700;color:#111827;">${u.name} <span style="color:#9ca3af;font-size:10.5px;font-weight:400;">@${u.username}</span></div>
+        <div style="font-size:10.5px;color:#6b7280;">${u.dept||'—'} · ${u.email||'—'} ${u.regDate?'· '+u.regDate:''}</div>
+      </div>
+      ${isPending ? `<span style="font-size:10px;font-weight:700;color:#d97706;background:#fef3c7;padding:3px 8px;border-radius:10px;">${LANG==='vi'?'Chờ duyệt':'Pending'}</span>` : roleSelect(u.username, u.role)}
+      ${isPending ? `
+        <div style="display:flex;gap:6px;">
+          <button onclick="approveUser('${u.username}', 3)" style="flex:1;background:#059669;border:none;color:#fff;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">${LANG==='vi'?'✓ Duyệt':'✓ Approve'}</button>
+          <button onclick="rejectUser('${u.username}')" style="flex:1;background:#dc2626;border:none;color:#fff;padding:5px 8px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">✕</button>
+        </div>` : `<div style="font-size:11px;color:#059669;font-weight:700;">✓ ${LANG==='vi'?'Đã duyệt':'Approved'}</div>`}
+      ${!isPending ? `<button onclick="deleteUser('${u.username}')" style="background:none;border:1px solid #e5e7eb;color:#9ca3af;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-family:inherit;">${LANG==='vi'?'Xóa':'Delete'}</button>` : '<span></span>'}
+    </div>`;
+
+  // Also show demo accounts as reference
+  const demoRows = DEMO_ACCOUNTS.map(u => `
+    <div style="display:grid;grid-template-columns:1fr 120px 140px 120px;gap:10px;align-items:center;padding:10px 14px;background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;margin-bottom:7px;opacity:.8;">
+      <div>
+        <div style="font-size:12.5px;font-weight:700;color:#111827;">${u.name} <span style="color:#9ca3af;font-size:10.5px;font-weight:400;">@${u.username}</span></div>
+        <div style="font-size:10.5px;color:#6b7280;">Demo · ${u.dept}</div>
+      </div>
+      <span style="font-size:10px;font-weight:700;color:#059669;background:#dcfce7;padding:3px 8px;border-radius:10px;">Demo</span>
+      <div style="font-size:11px;color:#6b7280;">${getRoleLabel(u.role)}</div>
+      <div style="font-size:10.5px;color:#9ca3af;">${LANG==='vi'?'Hệ thống':'System'}</div>
+    </div>`).join('');
+
+  document.getElementById('pending-list').innerHTML = pending.length === 0
+    ? `<div style="font-size:12px;color:#9ca3af;padding:12px;">${LANG==='vi'?'Không có tài khoản nào đang chờ duyệt':'No pending accounts'}</div>`
+    : pending.map(u => userRow(u, true)).join('');
+
+  document.getElementById('approved-list').innerHTML = demoRows + approved.map(u => userRow(u, false)).join('');
+}
+
+function approveUser(username, role) {
+  const pending = getPending();
+  const idx = pending.findIndex(p => p.username === username);
+  if(idx === -1) return;
+  const user = { ...pending[idx], approved: true, role: parseInt(role) };
+  pending.splice(idx, 1);
+  savePending(pending);
+  const saved = getSavedAccounts();
+  saved.push(user);
+  saveAccounts(saved);
+  renderUserMgmt();
+}
+
+function rejectUser(username) {
+  if(!confirm((LANG==='vi'?'Từ chối và xóa yêu cầu của ':'Reject request from ') + username + '?')) return;
+  const pending = getPending().filter(p => p.username !== username);
+  savePending(pending);
+  renderUserMgmt();
+}
+
+function deleteUser(username) {
+  if(!confirm((LANG==='vi'?'Xóa tài khoản ':'Delete account ') + username + '?')) return;
+  saveAccounts(getSavedAccounts().filter(a => a.username !== username));
+  renderUserMgmt();
+}
+
+function changeUserRole(username, role) {
+  const saved = getSavedAccounts();
+  const u = saved.find(a => a.username === username);
+  if(u) { u.role = parseInt(role); saveAccounts(saved); }
+}
+
+/* ═══════════════════════════════════════════
+   PDF SECTION PICKER
+═══════════════════════════════════════════ */
+const PDF_SECTIONS = [
+  { id: 'cover',  labelVi: '📄 Trang bìa (Cover Page)', labelEn: '📄 Cover Page', checked: true, hidden: false },
+  { id: 'overview', labelVi: '📋 Overview — Thông tin tổng quan', labelEn: '📋 Overview', checked: true, hidden: false },
+  { id: 'specs',  labelVi: '⚙️ Specifications — Thông số kỹ thuật', labelEn: '⚙️ Specifications', checked: true, hidden: false },
+  { id: 'drawings', labelVi: '📐 Drawings & CAD — Bản vẽ', labelEn: '📐 Drawings & CAD', checked: true, hidden: false },
+  { id: 'sop',    labelVi: '🏭 Manufacturing SOP — Quy trình SX', labelEn: '🏭 Manufacturing SOP', checked: true, hidden: false },
+  { id: 'bom',    labelVi: '📦 Bill of Materials — Danh sách vật tư', labelEn: '📦 Bill of Materials', checked: true, hidden: false },
+  { id: 'qc',     labelVi: '🔍 QC / Standards — Kiểm định CL', labelEn: '🔍 QC / Standards', checked: true, hidden: false },
+  { id: 'media',  labelVi: '🖼 Media — Hình ảnh sản phẩm', labelEn: '🖼 Media Gallery', checked: false, hidden: false },
+];
+
+function openPdfPicker() {
+  // Sync hidden state from permissions
+  if(currentUser && currentUser.role === 3) {
+    PDF_SECTIONS.forEach(s => { if(s.id==='sop'||s.id==='bom') s.hidden=true; });
+  }
+  renderPdfPicker();
+  document.getElementById('pdf-picker-modal').style.display = 'flex';
+}
+
+function closePdfPicker() {
+  document.getElementById('pdf-picker-modal').style.display = 'none';
+}
+
+function renderPdfPicker() {
+  const cont = document.getElementById('pdf-section-checks');
+  cont.innerHTML = PDF_SECTIONS.map(s => s.hidden ? '' : `
+    <label style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:${s.checked?'#f0fdf4':'#f9fafb'};border:1.5px solid ${s.checked?'#a7f3d0':'#e5e7eb'};border-radius:8px;cursor:pointer;transition:all .15s;" onclick="toggleSection('${s.id}')">
+      <div style="width:18px;height:18px;border-radius:4px;border:2px solid ${s.checked?'#059669':'#d1d5db'};background:${s.checked?'#059669':'transparent'};display:grid;place-items:center;flex-shrink:0;transition:all .15s;">
+        ${s.checked?'<svg width="10" height="10" viewBox="0 0 10 10" fill="white"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>':''}
+      </div>
+      <span style="font-size:12.5px;font-weight:600;color:${s.checked?'#111827':'#6b7280'};">${LANG==='vi'?s.labelVi:s.labelEn}</span>
+    </label>`).join('');
+}
+
+function toggleSection(id) {
+  const s = PDF_SECTIONS.find(x=>x.id===id);
+  if(s) { s.checked = !s.checked; renderPdfPicker(); }
+}
+
+function pdfPickerSelectAll(val) {
+  PDF_SECTIONS.forEach(s => { if(!s.hidden) s.checked = val; });
+  renderPdfPicker();
+}
+
+function runPdfPreview() {
+  closePdfPicker();
+  buildPreview(PDF_SECTIONS.filter(s=>s.checked && !s.hidden).map(s=>s.id));
+  document.getElementById('pdf-preview-overlay').classList.add('show');
+}
+
+// Override the old exportPDF to open picker first
+window.exportPDF = function() { openPdfPicker(); };
+
+/* ═══════════════════════════════════════════
+   PATCH buildPreview to accept sections filter
+═══════════════════════════════════════════ */
+const _origBuildPreview = buildPreview;
+buildPreview = function(sections) {
+  // If called from old code without sections, use all checked
+  if(!sections) { sections = PDF_SECTIONS.filter(s=>s.checked&&!s.hidden).map(s=>s.id); }
+  const inc = id => sections.includes(id);
+
+  const name = document.getElementById('f-name').value||'—';
+  const art = document.getElementById('f-art').value||'—';
+  const rev = document.getElementById('f-rev').value||'—';
+  const desc = document.getElementById('f-desc').value||'Chưa có mô tả sản phẩm.';
+  const app = document.getElementById('f-app').value||'—';
+  const series = document.getElementById('f-series').value||'—';
+  const status = document.getElementById('f-status').value;
+  const hl = (document.getElementById('f-hl').value||'').split('\n').filter(Boolean);
+  const sopAuthor = document.getElementById('f-sop-author')?.value||'—';
+  const sopApprover = document.getElementById('f-sop-approver')?.value||'—';
+  const sopDate = document.getElementById('f-sop-date')?.value||'—';
+  const sopApvDate = document.getElementById('f-sop-apv-date')?.value||'—';
+  const sopDept = document.getElementById('f-sop-dept')?.value||'—';
+  const sopCode = document.getElementById('f-sop-code')?.value||'—';
+  const today = new Date().toLocaleDateString('vi-VN');
+  const statusLabel = {draft:t('status-draft'),review:t('status-review'),approved:t('status-approved')}[status]||'Draft';
+  const statusColor = {draft:'#6b7280',review:'#d97706',approved:'#059669'}[status];
+
+  const specRows = document.querySelectorAll('#spec-body tr');
+  let specsHtml = '';
+  specRows.forEach((tr,i) => {
+    if(i>=6) return;
+    const cells = tr.querySelectorAll('td');
+    specsHtml += `<div class="a4-cov-meta-item"><div class="lbl">${cells[0]?.textContent||''}</div><div class="val">${cells[1]?.textContent||''} ${cells[2]?.textContent||''}</div></div>`;
+  });
+
+  const bomRows = document.querySelectorAll('#bom-body tr');
+  let bomHtml = '';
+  bomRows.forEach(tr => {
+    const td = tr.querySelectorAll('td');
+    bomHtml += `<tr><td>${td[0]?.textContent||''}</td><td><b>${td[1]?.textContent||''}</b></td><td>${td[2]?.textContent||''}</td><td>${td[3]?.textContent||''}</td><td style="text-align:center">${td[4]?.textContent||''}</td><td>${td[5]?.textContent||''}</td><td>${td[6]?.textContent||''}</td><td><span class="a4-qc-badge ${td[7]?.textContent?.includes('Make')?'qcb-p':'qcb-n'}">${td[7]?.textContent||''}</span></td></tr>`;
+  });
+
+  function qcRowsHtml(rows) {
+    return Array.from(rows).map(row => {
+      const spans = row.querySelectorAll('span');
+      const sel = row.querySelector('select');
+      const v = sel?.value||'n';
+      const badge = `<span class="a4-qc-badge qcb-${v}">${{p:'✓ Pass',f:'✗ Fail',n:'Pending'}[v]}</span>`;
+      return `<tr><td>${spans[0]?.textContent||''}</td><td>${spans[1]?.textContent||''}</td><td>${spans[2]?.textContent||''}</td><td>${spans[3]?.textContent||''}</td><td>${badge}</td></tr>`;
+    }).join('');
+  }
+
+  let sopHtml = '';
+  if(typeof sopSteps !== 'undefined') sopSteps.forEach(s => {
+    sopHtml += `<div class="a4-step"><div class="a4-step-hdr"><div class="a4-step-num">${s.num}</div><div class="a4-step-title">${s.name}</div><div class="a4-step-time">⏱ ${s.time} phút</div><div class="a4-step-time" style="margin-left:6px;">👷 ${s.workers} người</div></div><div class="a4-step-body"><div class="desc">${s.desc}</div>${s.img?`<div><img src="${s.img}" style="width:100%;max-height:100px;object-fit:contain;border-radius:4px;border:1px solid #e5e7eb;"></div>`:''}<div class="a4-step-micro"><div class="ml">Máy / Thiết bị</div><div class="mv">${s.machine||'—'}</div></div><div class="a4-step-micro"><div class="ml">Tiêu chuẩn CL</div><div class="mv">${s.standard||'—'}</div></div><div class="a4-step-micro"><div class="ml">Dung sai</div><div class="mv">${s.tolerance||'—'}</div></div><div class="a4-step-micro" style="grid-column:1/-1;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:5px 8px;"><div class="ml" style="color:#d97706;">⚠ Cảnh báo</div><div class="mv">${s.warning||'—'}</div></div></div></div>`;
+  });
+
+  // Media images
+  const mediaSlots = document.querySelectorAll('.uz-preview img');
+  let mediaHtml = '';
+  if(mediaSlots.length > 0) {
+    mediaHtml = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px;">`;
+    mediaSlots.forEach(img => { mediaHtml += `<img src="${img.src}" style="width:100%;height:90px;object-fit:contain;border:1px solid #e5e7eb;border-radius:6px;">`; });
+    mediaHtml += `</div>`;
+  }
+
+  let parts = '';
+
+  if(inc('cover')) parts += `
+  <div class="a4-page a4-cover">
+    <div class="a4-cov-accent"></div>
+    <div class="a4-cov-body">
+      <div class="a4-cov-logo">
+        <div class="a4-cov-mark">NS</div>
+        <div><div class="a4-cov-bn">NSCA</div><div class="a4-cov-bs">Ngôi Sao Châu Á JSC · starduct.vn</div></div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-size:9px;color:#4b5563;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">${LANG==='vi'?'Trạng thái':'Status'}</div>
+          <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}</div>
+        </div>
+      </div>
+      <div class="a4-cov-kicker">Technical Data Sheet · TDS</div>
+      <div class="a4-cov-title">${name}</div>
+      <div class="a4-cov-desc">${desc}</div>
+      <div class="a4-cov-meta-grid">${specsHtml}</div>
+      <div class="a4-cov-sign">
+        <div class="a4-cov-sign-box"><div class="role">${LANG==='vi'?'Người lập / Prepared by':'Prepared by'}</div><div class="name">${sopAuthor}</div><div class="date">${sopDate}</div></div>
+        <div class="a4-cov-sign-box"><div class="role">${LANG==='vi'?'Bộ phận / Department':'Department'}</div><div class="name">${sopDept}</div><div class="date">${sopCode}</div></div>
+        <div class="a4-cov-sign-box"><div class="role">${LANG==='vi'?'Người phê duyệt / Approved by':'Approved by'}</div><div class="name">${sopApprover}</div><div class="date">${sopApvDate||'—'}</div></div>
+      </div>
+      <div class="a4-cov-ft">
+        <div><strong>${LANG==='vi'?'Tài liệu kiểm soát nội bộ':'Internal Controlled Document'}</strong>Art. No.: ${art} · Series: ${series} · Rev.: ${rev}<br>${LANG==='vi'?'Ngày xuất':'Issued'}: ${today}</div>
+        <div style="text-align:right;color:#4b5563;font-size:8px;">starduct.vn</div>
+      </div>
+    </div>
+  </div>`;
+
+  if(inc('overview')||inc('specs')) parts += `
+  <div class="a4-page a4-content">`;
+  if(inc('overview')) parts += `
+    <div class="a4-sec-hdr"><span class="a4-sec-title">📋 1. ${LANG==='vi'?'OVERVIEW — THÔNG TIN TỔNG QUAN':'OVERVIEW'}</span><span class="a4-sec-code">Art. ${art}</span></div>
+    <div class="a4-2col">
+      <div>
+        <div class="a4-field-block"><div class="lbl">${LANG==='vi'?'Tên sản phẩm':'Product Name'}</div><div class="val">${name}</div></div>
+        <div class="a4-field-block"><div class="lbl">Art. No.</div><div class="val">${art}</div></div>
+        <div class="a4-field-block"><div class="lbl">Series</div><div class="val">${series}</div></div>
+        <div class="a4-field-block"><div class="lbl">${LANG==='vi'?'Ứng dụng':'Application'}</div><div class="val">${app}</div></div>
+        <div class="a4-field-block"><div class="lbl">Revision</div><div class="val">${rev}</div></div>
+      </div>
+      <div>
+        <div class="lbl" style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;">${LANG==='vi'?'Điểm nổi bật':'Highlights'}</div>
+        <ul class="a4-hl-list">${hl.map(h=>`<li><div class="a4-hl-dot"></div>${h}</li>`).join('')}</ul>
+      </div>
+    </div>`;
+  if(inc('specs')) parts += `
+    <div class="a4-sec-hdr" style="margin-top:18px;"><span class="a4-sec-title">⚙️ 2. ${LANG==='vi'?'SPECIFICATIONS — THÔNG SỐ KỸ THUẬT':'SPECIFICATIONS'}</span></div>
+    <table class="a4-table"><thead><tr><th>${LANG==='vi'?'Thông số':'Parameter'}</th><th>${LANG==='vi'?'Giá trị':'Value'}</th><th>${LANG==='vi'?'Đơn vị':'Unit'}</th><th>${LANG==='vi'?'Ghi chú':'Notes'}</th></tr></thead>
+    <tbody>${Array.from(specRows).map(tr=>{const td=tr.querySelectorAll('td');return`<tr><td><b>${td[0]?.textContent||''}</b></td><td>${td[1]?.textContent||''}</td><td>${td[2]?.textContent||''}</td><td>${td[3]?.textContent||''}</td></tr>`;}).join('')}</tbody></table>`;
+  if(inc('overview')||inc('specs')) parts += `</div>`;
+
+  if(inc('sop')) parts += `
+  <div class="a4-page a4-content">
+    <div class="a4-sec-hdr"><span class="a4-sec-title">🏭 3. ${LANG==='vi'?'MANUFACTURING SOP — QUY TRÌNH SẢN XUẤT':'MANUFACTURING SOP'}</span><span class="a4-sec-code">${sopCode}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;font-size:11px;">
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">${LANG==='vi'?'Bộ phận':'Dept.'}</div><div style="font-weight:700;">${sopDept}</div></div>
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">${LANG==='vi'?'Số bước':'Steps'}</div><div style="font-weight:700;">${(typeof sopSteps!=='undefined'?sopSteps.length:0)} ${LANG==='vi'?'bước':'steps'}</div></div>
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">${LANG==='vi'?'Tổng thời gian':'Total Time'}</div><div style="font-weight:700;">${(typeof sopSteps!=='undefined'?sopSteps.reduce((a,s)=>a+(parseInt(s.time)||0),0):0)} ${LANG==='vi'?'phút':'min'}</div></div>
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">${LANG==='vi'?'Người lập':'Prepared by'}</div><div style="font-weight:700;">${sopAuthor}</div></div>
+    </div>
+    ${sopHtml}
+  </div>`;
+
+  if(inc('bom')||inc('qc')) parts += `<div class="a4-page a4-content">`;
+  if(inc('bom')) parts += `
+    <div class="a4-sec-hdr"><span class="a4-sec-title">📦 4. ${LANG==='vi'?'BILL OF MATERIALS — DANH SÁCH VẬT TƯ':'BILL OF MATERIALS'}</span></div>
+    <table class="a4-table"><thead><tr><th>#</th><th>${LANG==='vi'?'Mã vật tư':'Part No.'}</th><th>${LANG==='vi'?'Mô tả':'Description'}</th><th>${LANG==='vi'?'Vật liệu':'Material'}</th><th>SL</th><th>ĐVT</th><th>${LANG==='vi'?'NCC':'Supplier'}</th><th>${LANG==='vi'?'Loại':'Type'}</th></tr></thead><tbody>${bomHtml}</tbody></table>`;
+  if(inc('qc')) parts += `
+    <div class="a4-sec-hdr" style="margin-top:${inc('bom')?'18px':'0px'};"><span class="a4-sec-title">🔍 5. ${LANG==='vi'?'QC / STANDARDS — KIỂM ĐỊNH CHẤT LƯỢNG':'QC / STANDARDS'}</span></div>
+    <div style="font-size:11px;font-weight:700;color:#374151;margin:8px 0 4px;">${LANG==='vi'?'Kiểm tra kích thước':'Dimensional Inspection'}</div>
+    <table class="a4-table"><thead><tr><th>${LANG==='vi'?'Hạng mục':'Item'}</th><th>Min</th><th>Max</th><th>${LANG==='vi'?'Thực tế':'Actual'}</th><th>${LANG==='vi'?'Kết quả':'Result'}</th></tr></thead><tbody>${qcRowsHtml(document.querySelectorAll('#qc-dim .qc-row'))}</tbody></table>
+    <div style="font-size:11px;font-weight:700;color:#374151;margin:10px 0 4px;">${LANG==='vi'?'Kiểm tra chức năng':'Functional Tests'}</div>
+    <table class="a4-table"><thead><tr><th>${LANG==='vi'?'Hạng mục':'Item'}</th><th>${LANG==='vi'?'Yêu cầu':'Req.'}</th><th>${LANG==='vi'?'Giới hạn':'Limit'}</th><th>${LANG==='vi'?'Thực tế':'Actual'}</th><th>${LANG==='vi'?'Kết quả':'Result'}</th></tr></thead><tbody>${qcRowsHtml(document.querySelectorAll('#qc-func .qc-row'))}</tbody></table>`;
+  if(inc('bom')||inc('qc')) parts += `</div>`;
+
+  if(inc('media') && mediaHtml) parts += `
+  <div class="a4-page a4-content">
+    <div class="a4-sec-hdr"><span class="a4-sec-title">🖼 6. ${LANG==='vi'?'MEDIA — HÌNH ẢNH SẢN PHẨM':'MEDIA GALLERY'}</span></div>
+    ${mediaHtml}
+  </div>`;
+
+  parts += `<div class="a4-page-num">NSCA Technical Data Sheet · ${name} · Art. ${art} · Rev. ${rev} · ${today} · starduct.vn</div>`;
+
+  document.getElementById('pdf-preview-content').innerHTML = parts || `<div style="padding:40px;text-align:center;color:#6b7280;">${LANG==='vi'?'Chưa chọn phần nào để xuất':'No sections selected'}</div>`;
+};
+
+// Initial apply
+setTimeout(applyLang, 100);
+</script>
+
+</body>
+</html>
+
+<style>
+/* ═══════════ PDF PREVIEW MODAL ═══════════ */
+#pdf-preview-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:600;
+  align-items:flex-start; justify-content:center; overflow-y:auto; padding:24px 16px;
+}
+#pdf-preview-overlay.show { display:flex; }
+#pdf-preview-wrap {
+  background:#fff; width:794px; max-width:100%; border-radius:10px; overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,.4); margin:auto;
+}
+.pp-bar {
+  background:#1e2836; padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:10;
+}
+.pp-bar h3 { color:#fff; font-size:13px; font-weight:700; }
+.pp-bar-actions { display:flex; gap:8px; }
+.pp-close { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); color:#fff; padding:5px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-family:inherit; font-weight:600; }
+.pp-close:hover { background:rgba(255,255,255,.2); }
+.pp-print { background:#dc2626; border:none; color:#fff; padding:5px 14px; border-radius:6px; cursor:pointer; font-size:12px; font-family:inherit; font-weight:700; }
+.pp-print:hover { background:#b91c1c; }
+
+/* A4 preview body */
+.a4-page {
+  background:#fff; width:794px; min-height:1123px; padding:0; position:relative;
+}
+/* Cover page */
+.a4-cover {
+  background:#0f1623; min-height:1123px; padding:0; display:flex; flex-direction:column;
+}
+.a4-cov-accent { height:6px; background:#dc2626; }
+.a4-cov-body { padding:48px 52px; flex:1; display:flex; flex-direction:column; }
+.a4-cov-logo { display:flex; align-items:center; gap:12px; margin-bottom:52px; }
+.a4-cov-mark { width:40px; height:40px; background:#dc2626; border-radius:8px; display:grid; place-items:center; font-size:15px; font-weight:800; color:#fff; }
+.a4-cov-bn { font-size:15px; font-weight:800; color:#fff; letter-spacing:2px; }
+.a4-cov-bs { font-size:10px; color:#4b5563; margin-top:2px; }
+.a4-cov-kicker { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:4px; color:#dc2626; margin-bottom:10px; }
+.a4-cov-title { font-size:32px; font-weight:800; color:#fff; letter-spacing:-1.5px; line-height:1.1; margin-bottom:14px; }
+.a4-cov-desc { font-size:12px; color:#6b7280; line-height:1.8; max-width:480px; margin-bottom:32px; }
+.a4-cov-meta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:auto; padding-bottom:48px; }
+.a4-cov-meta-item .lbl { font-size:8px; text-transform:uppercase; letter-spacing:1.5px; color:#374151; font-weight:700; margin-bottom:5px; }
+.a4-cov-meta-item .val { font-size:13px; color:#fff; font-weight:600; }
+.a4-cov-sign { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; border-top:1px solid rgba(255,255,255,.07); padding-top:20px; margin-top:20px; }
+.a4-cov-sign-box { text-align:center; }
+.a4-cov-sign-box .role { font-size:8px; text-transform:uppercase; letter-spacing:1px; color:#4b5563; margin-bottom:4px; font-weight:700; }
+.a4-cov-sign-box .name { font-size:11px; color:#9ca3af; border-top:1px solid #374151; padding-top:6px; margin-top:28px; }
+.a4-cov-sign-box .date { font-size:9px; color:#4b5563; margin-top:2px; }
+.a4-cov-ft { display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid rgba(255,255,255,.07); padding-top:14px; font-size:9px; color:#374151; }
+.a4-cov-ft strong { color:#6b7280; display:block; margin-bottom:2px; font-size:9px; }
+
+/* Content pages */
+.a4-content { padding:32px 40px; }
+.a4-sec-hdr {
+  background:#1e2836; color:#fff; padding:8px 16px; border-radius:6px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:space-between; margin-top:20px;
+}
+.a4-sec-hdr:first-child { margin-top:0; }
+.a4-sec-title { font-size:13px; font-weight:700; }
+.a4-sec-code { font-size:10px; color:#6b7280; font-family:'JetBrains Mono',monospace; }
+.a4-table { width:100%; border-collapse:collapse; margin-bottom:12px; font-size:11px; }
+.a4-table th { background:#374151; color:#fff; padding:6px 10px; text-align:left; font-weight:600; font-size:10px; border:1px solid #4b5563; }
+.a4-table td { padding:5px 10px; border:1px solid #e5e7eb; vertical-align:top; line-height:1.5; }
+.a4-table tr:nth-child(even) td { background:#f9fafb; }
+.a4-2col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.a4-field-block { margin-bottom:10px; }
+.a4-field-block .lbl { font-size:8.5px; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:.8px; margin-bottom:3px; }
+.a4-field-block .val { font-size:11.5px; color:#111827; font-weight:500; border-bottom:1px solid #e5e7eb; padding-bottom:3px; min-height:18px; }
+.a4-hl-list { list-style:none; margin:8px 0; }
+.a4-hl-list li { display:flex; gap:8px; font-size:11px; color:#374151; padding:4px 0; border-bottom:1px dashed #e5e7eb; line-height:1.5; }
+.a4-hl-list li:last-child { border:none; }
+.a4-hl-dot { width:5px; height:5px; background:#dc2626; border-radius:50%; margin-top:5px; flex-shrink:0; }
+.a4-step { border:1px solid #e5e7eb; border-radius:6px; margin-bottom:8px; overflow:hidden; }
+.a4-step-hdr { display:flex; align-items:center; gap:8px; padding:6px 12px; background:#f9fafb; border-bottom:1px solid #e5e7eb; }
+.a4-step-num { width:20px; height:20px; border-radius:50%; background:#dc2626; color:#fff; display:grid; place-items:center; font-size:10px; font-weight:700; flex-shrink:0; }
+.a4-step-title { font-size:11.5px; font-weight:700; color:#111827; flex:1; }
+.a4-step-time { font-size:10px; color:#6b7280; background:#e5e7eb; padding:2px 8px; border-radius:10px; }
+.a4-step-body { padding:8px 12px; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.a4-step-body .desc { grid-column:1/-1; font-size:11px; color:#374151; line-height:1.6; }
+.a4-step-micro { font-size:9.5px; }
+.a4-step-micro .ml { color:#6b7280; font-weight:700; margin-bottom:2px; font-size:8.5px; text-transform:uppercase; }
+.a4-step-micro .mv { color:#111827; }
+.a4-qc-badge { display:inline-block; padding:1px 7px; border-radius:10px; font-size:9px; font-weight:700; }
+.qcb-p { background:#ecfdf5; color:#059669; }
+.qcb-f { background:#fef2f2; color:#dc2626; }
+.qcb-n { background:#fffbeb; color:#d97706; }
+.a4-page-num { text-align:right; font-size:9px; color:#9ca3af; padding:8px 40px; border-top:1px solid #e5e7eb; }
+
+/* ═══════════ SOP DETAIL PANEL ═══════════ */
+.sop-detail { border:1px solid var(--line); border-radius:var(--r2); overflow:hidden; margin-bottom:11px; box-shadow:var(--sh); background:var(--white); }
+.sop-det-hdr { display:grid; grid-template-columns:36px 1fr 110px 100px 100px; align-items:center; gap:8px; padding:8px 14px; background:var(--bg); border-bottom:1px solid var(--line); }
+.sop-det-hdr.col-hd { background:var(--c0); }
+.sop-det-hdr.col-hd span { color:#fff; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.sop-step-num2 { width:28px; height:28px; background:var(--red); color:#fff; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:700; }
+.sop-step-name { font-size:12.5px; font-weight:700; color:var(--c0); }
+.sop-step-time { font-size:12px; color:var(--c3); }
+.sop-step-dept { font-size:11.5px; color:var(--c1); }
+.sop-body { padding:12px 15px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.sop-desc-area { grid-column:1/-1; }
+.sop-img-area { border-radius:var(--r); overflow:hidden; background:var(--bg); border:1px solid var(--line); min-height:90px; display:flex; align-items:center; justify-content:center; }
+.sop-img-area img { width:100%; height:100%; object-fit:contain; max-height:120px; }
+.sop-qc-inline { background:var(--green-bg); border:1px solid var(--green-b); border-radius:var(--r); padding:8px 11px; }
+.sop-qc-inline .qil { font-size:9.5px; font-weight:700; color:var(--green); text-transform:uppercase; margin-bottom:4px; }
+.sop-qc-inline .qiv { font-size:11.5px; color:var(--c1); line-height:1.5; }
+.sop-warn { background:var(--amber-bg); border:1px solid var(--amber-b); border-radius:var(--r); padding:8px 11px; }
+.sop-warn .wl { font-size:9.5px; font-weight:700; color:var(--amber); text-transform:uppercase; margin-bottom:4px; }
+.sop-warn .wv { font-size:11px; color:var(--c2); line-height:1.5; }
+
+/* ═══════════ MANAGE GROUPS MODAL ═══════════ */
+.mgmt-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:400; align-items:center; justify-content:center; }
+.mgmt-modal.show { display:flex; }
+.mgmt-box { background:#fff; border-radius:14px; width:720px; max-width:96vw; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 24px 60px rgba(0,0,0,.3); }
+.mgmt-top { background:var(--c0); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; }
+.mgmt-top h3 { color:#fff; font-size:14px; font-weight:800; }
+.mgmt-body { display:grid; grid-template-columns:200px 1fr; flex:1; overflow:hidden; min-height:0; }
+.mgmt-ind-list { border-right:1px solid var(--line); overflow-y:auto; padding:10px 0; }
+.mgmt-ind-item { padding:9px 16px; font-size:12.5px; font-weight:600; color:var(--c2); cursor:pointer; border-left:3px solid transparent; transition:all .15s; }
+.mgmt-ind-item:hover { background:var(--bg); }
+.mgmt-ind-item.act { border-left-color:var(--red); background:var(--red-bg); color:var(--red); }
+.mgmt-ind-add { padding:9px 16px; font-size:12px; color:var(--red); cursor:pointer; font-weight:700; border-top:1px dashed var(--line); margin-top:4px; }
+.mgmt-ind-add:hover { background:var(--red-bg); }
+.mgmt-right { padding:18px; overflow-y:auto; }
+.mgmt-sec { margin-bottom:18px; }
+.mgmt-sec-t { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--c3); margin-bottom:8px; }
+.mgmt-ind-fields { display:grid; grid-template-columns:60px 1fr 1fr; gap:10px; align-items:end; margin-bottom:12px; }
+.grp-item-row { display:flex; align-items:center; gap:8px; padding:7px 11px; background:var(--bg); border:1px solid var(--line); border-radius:var(--r); margin-bottom:6px; }
+.grp-item-row .gi-icon { font-size:16px; width:24px; }
+.grp-item-row .gi-name { flex:1; font-size:12.5px; font-weight:600; color:var(--c0); }
+.grp-item-row .gi-desc { font-size:11px; color:var(--c3); flex:2; }
+.grp-item-row .gi-badge { font-size:9.5px; font-weight:700; background:var(--c0); color:#fff; padding:2px 7px; border-radius:4px; }
+.grp-item-row .gi-del { background:none; border:none; color:#9ca3af; cursor:pointer; font-size:13px; padding:3px; border-radius:4px; }
+.grp-item-row .gi-del:hover { background:var(--red-bg); color:var(--red); }
+.mgmt-add-grp { display:grid; grid-template-columns:60px 1fr 1fr 80px; gap:8px; align-items:end; padding:10px; background:var(--blue-bg); border-radius:var(--r); border:1px solid var(--blue-b); }
+.mgmt-foot { padding:14px 20px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+.mgmt-del-ind { background:none; border:1px solid var(--line); color:var(--c3); padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-family:inherit; }
+.mgmt-del-ind:hover { border-color:var(--red); color:var(--red); background:var(--red-bg); }
+</style>
+
+<!-- ═══════════ PDF PREVIEW MODAL ═══════════ -->
+<div id="pdf-preview-overlay">
+  <div id="pdf-preview-wrap">
+    <div class="pp-bar">
+      <h3>👁 Xem trước PDF — Technical Data Sheet</h3>
+      <div class="pp-bar-actions">
+        <button class="pp-close" onclick="closePdfPreview()">✕ Đóng</button>
+        <button class="pp-print" onclick="doPrint()">🖨 In / Xuất PDF</button>
+      </div>
+    </div>
+    <div id="pdf-preview-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════ MANAGE GROUPS MODAL ═══════════ -->
+<div class="mgmt-modal" id="mgmt-modal">
+  <div class="mgmt-box">
+    <div class="mgmt-top">
+      <h3>⚙️ Quản lý nhóm ngành & nhóm sản phẩm</h3>
+      <button class="pp-close" onclick="closeMgmt()">✕</button>
+    </div>
+    <div class="mgmt-body">
+      <div class="mgmt-ind-list" id="mgmt-ind-list"></div>
+      <div class="mgmt-right" id="mgmt-right">
+        <div style="color:var(--c3);font-size:13px;padding:20px;">Chọn nhóm ngành để chỉnh sửa →</div>
+      </div>
+    </div>
+    <div class="mgmt-foot">
+      <button class="mgmt-del-ind" id="mgmt-del-btn" onclick="deleteCurrentIndustry()">🗑 Xóa nhóm ngành này</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="closeMgmt()">Hủy</button>
+        <button class="btn btn-r" onclick="saveMgmt()">💾 Lưu thay đổi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════ LOAD CUSTOM GROUPS FROM STORAGE ═══════════ */
+(function initGroups() {
+  const saved = localStorage.getItem('nsca-groups');
+  if(saved) {
+    try { Object.assign(GROUPS, JSON.parse(saved)); } catch(e) {}
+  }
+  const savedInd = localStorage.getItem('nsca-industries');
+  if(savedInd) {
+    try {
+      const inds = JSON.parse(savedInd);
+      // Rebuild dash industry cards
+      const grid = document.querySelector('.ind-grid');
+      if(grid) {
+        grid.innerHTML = inds.map(ind => `
+          <div class="ind-c" onclick="goIndustry('${ind.id}','${ind.icon}','${ind.name}','${ind.desc}')">
+            <div class="ind-icon">${ind.icon}</div>
+            <div class="ind-name">${ind.name}</div>
+            <div class="ind-desc">${ind.desc}</div>
+            <div class="ind-ft"><span class="ind-cnt"><strong>${(GROUPS[ind.id]||[]).length}</strong> nhóm SP</span><span class="ind-arr">→</span></div>
+          </div>`).join('');
+      }
+      window.INDUSTRIES = inds;
+    } catch(e) {}
+  } else {
+    window.INDUSTRIES = [
+      {id:'hvac', icon:'🌀', name:'Hệ thống HVAC', desc:'Cửa gió, khuếch tán khí, van điều chỉnh'},
+      {id:'fire', icon:'🔥', name:'Phòng cháy chữa cháy', desc:'Van chặn lửa, van chặn khói, cửa gió EI'},
+      {id:'vav', icon:'📦', name:'VAV & Điều tiết', desc:'Hộp VAV, van VCD EI, điều tiết lưu lượng'}
+    ];
+  }
+})();
+
+function saveGroups() {
+  localStorage.setItem('nsca-groups', JSON.stringify(GROUPS));
+  localStorage.setItem('nsca-industries', JSON.stringify(window.INDUSTRIES));
+}
+
+/* ═══════════ MANAGE GROUPS ═══════════ */
+let mgmtSelInd = null;
+
+function openMgmt() {
+  renderMgmtIndList();
+  document.getElementById('mgmt-modal').classList.add('show');
+}
+function closeMgmt() {
+  document.getElementById('mgmt-modal').classList.remove('show');
+}
+
+function renderMgmtIndList() {
+  const list = document.getElementById('mgmt-ind-list');
+  list.innerHTML = (window.INDUSTRIES||[]).map(ind => `
+    <div class="mgmt-ind-item ${mgmtSelInd===ind.id?'act':''}" onclick="selectMgmtInd('${ind.id}')">${ind.icon} ${ind.name}</div>
+  `).join('') +
+  `<div class="mgmt-ind-add" onclick="addNewIndustry()">+ Thêm nhóm ngành</div>`;
+}
+
+function selectMgmtInd(id) {
+  mgmtSelInd = id;
+  renderMgmtIndList();
+  renderMgmtRight(id);
+}
+
+function renderMgmtRight(id) {
+  const ind = (window.INDUSTRIES||[]).find(i=>i.id===id);
+  if(!ind) return;
+  const groups = GROUPS[id]||[];
+  document.getElementById('mgmt-right').innerHTML = `
+    <div class="mgmt-sec">
+      <div class="mgmt-sec-t">Thông tin nhóm ngành</div>
+      <div class="mgmt-ind-fields">
+        <div class="fl"><label>Icon</label><input id="mi-icon" type="text" value="${ind.icon}" style="font-size:18px;text-align:center;"></div>
+        <div class="fl"><label>Tên nhóm ngành</label><input id="mi-name" type="text" value="${ind.name}"></div>
+        <div class="fl"><label>Mô tả</label><input id="mi-desc" type="text" value="${ind.desc}"></div>
+      </div>
+    </div>
+    <div class="mgmt-sec">
+      <div class="mgmt-sec-t">Nhóm sản phẩm (${groups.length} nhóm)</div>
+      <div id="grp-list-mgmt">
+        ${groups.map((g,i) => `
+          <div class="grp-item-row" data-gi="${i}">
+            <span class="gi-icon">${g.icon}</span>
+            <span class="gi-name">${g.name}</span>
+            <span class="gi-desc">${g.desc}</span>
+            <span class="gi-badge">${g.badge}</span>
+            <button class="gi-del" onclick="delGrp('${id}',${i})">✕</button>
+          </div>`).join('')}
+      </div>
+      <div class="mgmt-add-grp" style="margin-top:10px;">
+        <div class="fl"><label>Icon</label><input id="ng-icon" type="text" value="📦" style="font-size:14px;text-align:center;"></div>
+        <div class="fl"><label>Tên nhóm</label><input id="ng-name" type="text" placeholder="Cửa gió loại X"></div>
+        <div class="fl"><label>Mô tả</label><input id="ng-desc" type="text" placeholder="Mô tả ngắn..."></div>
+        <div class="fl"><label>Badge</label>
+          <button class="btn btn-r" onclick="addGrp('${id}')" style="width:100%;justify-content:center;">Thêm</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function addGrp(indId) {
+  const icon = document.getElementById('ng-icon').value.trim()||'📦';
+  const name = document.getElementById('ng-name').value.trim();
+  if(!name) { alert('Nhập tên nhóm sản phẩm!'); return; }
+  const desc = document.getElementById('ng-desc').value.trim();
+  const badge = name.slice(0,4).toUpperCase();
+  const id = 'grp_' + Date.now();
+  if(!GROUPS[indId]) GROUPS[indId] = [];
+  GROUPS[indId].push({ id, icon, name, desc, badge });
+  renderMgmtRight(indId);
+}
+
+function delGrp(indId, idx) {
+  if(!confirm('Xóa nhóm sản phẩm này?')) return;
+  GROUPS[indId].splice(idx,1);
+  renderMgmtRight(indId);
+}
+
+function addNewIndustry() {
+  const id = 'ind_' + Date.now();
+  const ind = { id, icon:'🏭', name:'Nhóm ngành mới', desc:'Mô tả nhóm ngành' };
+  window.INDUSTRIES.push(ind);
+  if(!GROUPS[id]) GROUPS[id] = [];
+  renderMgmtIndList();
+  selectMgmtInd(id);
+}
+
+function deleteCurrentIndustry() {
+  if(!mgmtSelInd) return;
+  if(!confirm('Xóa toàn bộ nhóm ngành này và tất cả nhóm sản phẩm con?')) return;
+  window.INDUSTRIES = window.INDUSTRIES.filter(i=>i.id!==mgmtSelInd);
+  delete GROUPS[mgmtSelInd];
+  mgmtSelInd = null;
+  renderMgmtIndList();
+  document.getElementById('mgmt-right').innerHTML = '<div style="color:var(--c3);font-size:13px;padding:20px;">Chọn nhóm ngành để chỉnh sửa →</div>';
+}
+
+function saveMgmt() {
+  // Save current industry edits
+  if(mgmtSelInd) {
+    const ind = window.INDUSTRIES.find(i=>i.id===mgmtSelInd);
+    if(ind) {
+      ind.icon = document.getElementById('mi-icon')?.value||ind.icon;
+      ind.name = document.getElementById('mi-name')?.value||ind.name;
+      ind.desc = document.getElementById('mi-desc')?.value||ind.desc;
+    }
+  }
+  saveGroups();
+  // Rebuild dashboard cards
+  const grid = document.querySelector('.ind-grid');
+  if(grid) {
+    grid.innerHTML = window.INDUSTRIES.map(ind => `
+      <div class="ind-c" onclick="goIndustry('${ind.id}','${ind.icon}','${ind.name}','${ind.desc}')">
+        <div class="ind-icon">${ind.icon}</div>
+        <div class="ind-name">${ind.name}</div>
+        <div class="ind-desc">${ind.desc}</div>
+        <div class="ind-ft"><span class="ind-cnt"><strong>${(GROUPS[ind.id]||[]).length}</strong> nhóm SP</span><span class="ind-arr">→</span></div>
+      </div>`).join('');
+  }
+  closeMgmt();
+  alert('✅ Đã lưu cấu trúc nhóm ngành!');
+}
+
+/* ═══════════ SOP DETAIL PANEL (ENHANCED) ═══════════ */
+// Override P3 with new rich SOP layout
+document.getElementById('p3').innerHTML = `
+  <div class="pdf-sec-t">🏭 Manufacturing SOP <span></span></div>
+  <div class="p-hd"><h2>🏭 Manufacturing SOP</h2><p>Quy trình sản xuất chi tiết</p></div>
+  <div class="sc" style="margin-bottom:14px;">
+    <div class="sc-hd"><div class="sc-hd-l"><div class="sc-ico r">⚙️</div><div><div class="sc-t">Thông tin SOP</div></div></div>
+      <div class="no-print" style="display:flex;gap:6px;">
+        <button class="btn btn-ghost" onclick="importSOPExcel()">📥 Upload Excel</button>
+        <a href="" id="dl-sop-btn" class="btn btn-ghost" style="text-decoration:none;" download="SOP_Template_NSCA.xlsx">⬇ Tải template</a>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="fg fg4">
+        <div class="fl"><label>Mã SOP</label><input type="text" id="f-sop-code" placeholder="SOP-PRD-001"></div>
+        <div class="fl"><label>Bộ phận</label><input type="text" id="f-sop-dept" placeholder="Xưởng sản xuất"></div>
+        <div class="fl"><label>Chu kỳ SX</label><input type="text" id="f-sop-cycle" placeholder="15 phút/SP"></div>
+        <div class="fl"><label>Lô tối thiểu</label><input type="text" id="f-sop-batch" placeholder="50 SP"></div>
+      </div>
+      <div class="fg fg4" style="margin-top:11px;">
+        <div class="fl"><label>Người lập</label><input type="text" id="f-sop-author" placeholder="Nguyễn Văn A"></div>
+        <div class="fl"><label>Ngày lập</label><input type="date" id="f-sop-date"></div>
+        <div class="fl"><label>Người phê duyệt</label><input type="text" id="f-sop-approver" placeholder="Trần Thị B"></div>
+        <div class="fl"><label>Ngày phê duyệt</label><input type="date" id="f-sop-apv-date"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Column header -->
+  <div class="sop-detail" style="border-radius:var(--r);">
+    <div class="sop-det-hdr col-hd">
+      <span>#</span><span>Công đoạn</span><span>Thời gian</span><span>Nhân lực</span><span>Kết quả</span>
+    </div>
+  </div>
+  <div id="sop-steps2"></div>
+  <input type="file" id="sop-excel-input" accept=".xlsx" style="display:none" onchange="parseSopExcel(this)">
+  <button class="add-step-btn no-print" onclick="addDetailStep()">+ Thêm công đoạn</button>`;
+
+// Init SOP template download link
+fetch('/dev/null').catch(()=>{});
+(function setSopDlLink(){
+  // Will be set after page fully loads since file is local
+})();
+
+// Default SOP steps data
+let sopSteps = [
+  { num:1, name:'Chuẩn bị vật liệu', desc:'Lấy phôi thép tấm mạ kẽm GI 0.6mm theo phiếu xuất kho. Kiểm tra độ dày, bề mặt.', time:'5', machine:'Thước panme', workers:'1', standard:'Độ dày: 0.6±0.05mm · Bề mặt không xước', tolerance:'±0.05mm', warning:'Phôi không đạt → trả kho, báo QC', img:'' },
+  { num:2, name:'Cắt phôi (Blanking)', desc:'Lập trình CNC theo BV-NOVA-C-001. Kiểm tra mẫu đầu tiên trước khi cắt hàng loạt.', time:'8', machine:'CNC Amada', workers:'2', standard:'Kích thước ±0.3mm · Cạnh không bavia', tolerance:'±0.3mm', warning:'Kiểm 100% mẫu đầu, lấy mẫu 5% sau', img:'' },
+  { num:3, name:'Uốn khung (Bending)', desc:'Uốn 4 cạnh khung theo jig chuẩn JIG-NOVA-001. Kiểm tra góc 90° bằng dưỡng.', time:'10', machine:'CNC LVD', workers:'1', standard:'Góc 90°±0.5° · Phẳng ±0.2mm', tolerance:'±0.5°', warning:'Thay jig nếu đổi kích thước SP', img:'' },
+  { num:4, name:'Lắp ráp & Tán đinh', desc:'Đặt cánh vào khung theo pitch 20mm, dùng jig định vị. Tán đinh nhôm Ø3.2mm.', time:'15', machine:'Súng tán + jig', workers:'2', standard:'Pitch cánh 20±0.3mm · Lực tán đủ', tolerance:'±0.3mm', warning:'Kiểm chuyển động cánh trước khi tán', img:'' },
+  { num:5, name:'Kiểm tra & Đóng gói', desc:'Kiểm 100% theo checklist QC-NOVA-001. Vệ sinh, đóng túi PE, dán nhãn.', time:'5', machine:'Dưỡng, đèn soi', workers:'1', standard:'Pass checklist QC · Nhãn đúng mã', tolerance:'Xem QC sheet', warning:'Không để dầu, vân tay trên bề mặt', img:'' }
+];
+
+function renderSopSteps() {
+  const cont = document.getElementById('sop-steps2');
+  if(!cont) return;
+  cont.innerHTML = sopSteps.map((s,i) => `
+    <div class="sop-detail" id="sop-step-${i}">
+      <div class="sop-det-hdr">
+        <div class="sop-step-num2">${s.num}</div>
+        <div style="flex:1;">
+          <input class="step-ti" value="${s.name}" placeholder="Tên công đoạn" oninput="sopSteps[${i}].name=this.value" style="width:100%;">
+        </div>
+        <input type="text" value="${s.time}" placeholder="min" oninput="sopSteps[${i}].time=this.value" style="width:80px;border:1.5px solid var(--line);border-radius:6px;padding:4px 8px;font-size:12px;text-align:center;">
+        <input type="text" value="${s.workers}" placeholder="người" oninput="sopSteps[${i}].workers=this.value" style="width:70px;border:1.5px solid var(--line);border-radius:6px;padding:4px 8px;font-size:12px;text-align:center;">
+        <button class="del-btn no-print" onclick="delSopStep(${i})">✕</button>
+      </div>
+      <div class="sop-body">
+        <div class="sop-desc-area">
+          <div class="fl"><label>Mô tả chi tiết / Thao tác</label>
+            <textarea rows="2" oninput="sopSteps[${i}].desc=this.value" style="font-size:12px;">${s.desc}</textarea>
+          </div>
+        </div>
+        <div class="fg fg2" style="gap:8px;margin-top:0;">
+          <div class="fl"><label>Máy / Thiết bị</label><input type="text" value="${s.machine}" oninput="sopSteps[${i}].machine=this.value" placeholder="CNC, jig, súng tán..."></div>
+          <div class="fl"><label>Tiêu chuẩn chất lượng</label><input type="text" value="${s.standard}" oninput="sopSteps[${i}].standard=this.value" placeholder="Kích thước, góc..."></div>
+          <div class="fl"><label>Dung sai / Giới hạn</label><input type="text" value="${s.tolerance}" oninput="sopSteps[${i}].tolerance=this.value" placeholder="±0.3mm, ±1°..."></div>
+          <div class="fl"><label>Cảnh báo / Lưu ý</label><input type="text" value="${s.warning}" oninput="sopSteps[${i}].warning=this.value" placeholder="Lưu ý quan trọng..."></div>
+        </div>
+        <div>
+          <label class="fl" style="display:block;"><span style="display:block;font-size:10.5px;font-weight:700;color:var(--c3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;">Hình ảnh minh họa</span></label>
+          <div class="uz sop-img-upload" onclick="triggerSopImg(${i})" style="min-height:80px;">
+            <input type="file" id="sop-img-${i}" accept="image/*" onchange="previewSopImg(this,${i})" style="display:none">
+            ${s.img ? `<img src="${s.img}" style="max-height:100px;object-fit:contain;">` : '<div class="uz-ico" style="font-size:14px;">📷</div><div class="uz-txt" style="font-size:11px;">Upload ảnh công đoạn</div>'}
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function addDetailStep() {
+  sopSteps.push({ num:sopSteps.length+1, name:'Công đoạn mới', desc:'', time:'5', machine:'', workers:'1', standard:'', tolerance:'', warning:'', img:'' });
+  renderSopSteps();
+}
+function delSopStep(i) {
+  sopSteps.splice(i,1);
+  sopSteps.forEach((s,j)=>s.num=j+1);
+  renderSopSteps();
+}
+function triggerSopImg(i) { document.getElementById('sop-img-'+i).click(); }
+function previewSopImg(input, i) {
+  const r = new FileReader();
+  r.onload = e => { sopSteps[i].img = e.target.result; renderSopSteps(); };
+  r.readAsDataURL(input.files[0]);
+}
+function importSOPExcel() { document.getElementById('sop-excel-input').click(); }
+function parseSopExcel(input) {
+  alert('✅ File Excel đã nhận! Trong môi trường thực tế, hệ thống sẽ đọc các công đoạn từ cột A-J của sheet "SOP" và tự động điền vào các ô trên. Bạn có thể thêm thư viện SheetJS (xlsx) để enable tính năng này trực tiếp trên trình duyệt.');
+}
+
+renderSopSteps();
+
+/* ═══════════ UPLOAD EXCEL BOM ═══════════ */
+// Override BOM section to add upload button
+const bomHdr = document.querySelector('#p4 .sc .sc-hd');
+if(bomHdr) {
+  const existingBtns = bomHdr.querySelector('div');
+  if(existingBtns) {
+    existingBtns.innerHTML = '<button class="btn btn-ghost no-print" onclick="addBomRow()">+ Thêm</button><button class="btn btn-ghost no-print" onclick="document.getElementById(\'bom-excel-input\').click()">📥 Upload Excel</button><button class="btn btn-ghost no-print" onclick="exportBOM()">⬇ CSV</button><input type="file" id="bom-excel-input" accept=".xlsx" style="display:none" onchange="parseBomExcel(this)">';
+  }
+}
+function parseBomExcel(input) {
+  alert('✅ File BOM Excel đã nhận! Trong triển khai thực tế với thư viện SheetJS, hệ thống tự đọc từ hàng 6 của sheet "BOM" và điền vào bảng vật tư. Tải template BOM ở nút bên cạnh.');
+}
+
+/* ═══════════ ADD MGMT BUTTON TO DASHBOARD ═══════════ */
+const dashHero = document.querySelector('.dash-hero');
+if(dashHero) {
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-ghost';
+  btn.style = 'margin-top:10px;';
+  btn.innerHTML = '⚙️ Quản lý nhóm ngành & sản phẩm';
+  btn.onclick = openMgmt;
+  dashHero.appendChild(btn);
+}
+
+/* ═══════════ PDF PREVIEW SYSTEM ═══════════ */
+function exportPDF() {
+  buildPreview();
+  document.getElementById('pdf-preview-overlay').classList.add('show');
+}
+
+function closePdfPreview() {
+  document.getElementById('pdf-preview-overlay').classList.remove('show');
+}
+
+function doPrint() {
+  closePdfPreview();
+  setTimeout(() => {
+    // Mark all panels visible for print
+    document.querySelectorAll('.tds-p').forEach(p=>p.style.cssText='display:block!important');
+    window.print();
+    setTimeout(()=>{ document.querySelectorAll('.tds-p').forEach(p=>p.style.cssText=''); }, 600);
+  }, 200);
+}
+
+function buildPreview() {
+  const name = document.getElementById('f-name').value||'—';
+  const art = document.getElementById('f-art').value||'—';
+  const rev = document.getElementById('f-rev').value||'—';
+  const desc = document.getElementById('f-desc').value||'Chưa có mô tả sản phẩm.';
+  const app = document.getElementById('f-app').value||'—';
+  const series = document.getElementById('f-series').value||'—';
+  const status = document.getElementById('f-status').value;
+  const hl = (document.getElementById('f-hl').value||'').split('\n').filter(Boolean);
+  const sopAuthor = document.getElementById('f-sop-author')?.value||'—';
+  const sopApprover = document.getElementById('f-sop-approver')?.value||'—';
+  const sopDate = document.getElementById('f-sop-date')?.value||'—';
+  const sopApvDate = document.getElementById('f-sop-apv-date')?.value||'—';
+  const sopDept = document.getElementById('f-sop-dept')?.value||'—';
+  const sopCode = document.getElementById('f-sop-code')?.value||'—';
+  const today = new Date().toLocaleDateString('vi-VN');
+  const statusLabel = {draft:'Bản nháp',review:'Đang xét duyệt',approved:'Đã phê duyệt'}[status]||'Draft';
+  const statusColor = {draft:'#6b7280',review:'#d97706',approved:'#059669'}[status];
+
+  // Specs
+  const specRows = document.querySelectorAll('#spec-body tr');
+  let specsHtml = '';
+  specRows.forEach((tr,i) => {
+    if(i>=6) return;
+    const td = tr.querySelectorAll('td');
+    specsHtml += `<div class="a4-cov-meta-item"><div class="lbl">${td[0]?.textContent||''}</div><div class="val">${td[1]?.textContent||''} ${td[2]?.textContent||''}</div></div>`;
+  });
+
+  // BOM rows
+  const bomRows = document.querySelectorAll('#bom-body tr');
+  let bomHtml = '';
+  bomRows.forEach(tr => {
+    const td = tr.querySelectorAll('td');
+    bomHtml += `<tr><td>${td[0]?.textContent||''}</td><td><b>${td[1]?.textContent||''}</b></td><td>${td[2]?.textContent||''}</td><td>${td[3]?.textContent||''}</td><td style="text-align:center">${td[4]?.textContent||''}</td><td>${td[5]?.textContent||''}</td><td>${td[6]?.textContent||''}</td><td><span class="a4-qc-badge ${td[7]?.textContent?.includes('Make')?'qcb-p':'qcb-n'}">${td[7]?.textContent||''}</span></td></tr>`;
+  });
+
+  // QC rows
+  const qcDim = document.querySelectorAll('#qc-dim .qc-row');
+  const qcFunc = document.querySelectorAll('#qc-func .qc-row');
+  function qcRowsHtml(rows) {
+    return Array.from(rows).map(row => {
+      const spans = row.querySelectorAll('span');
+      const sel = row.querySelector('select');
+      const v = sel?.value||'n';
+      const badge = `<span class="a4-qc-badge qcb-${v}">${{p:'✓ Pass',f:'✗ Fail',n:'Pending'}[v]}</span>`;
+      return `<tr><td>${spans[0]?.textContent||''}</td><td>${spans[1]?.textContent||''}</td><td>${spans[2]?.textContent||''}</td><td>${spans[3]?.textContent||''}</td><td>${badge}</td></tr>`;
+    }).join('');
+  }
+
+  // SOP steps
+  let sopHtml = '';
+  sopSteps.forEach(s => {
+    sopHtml += `
+      <div class="a4-step">
+        <div class="a4-step-hdr">
+          <div class="a4-step-num">${s.num}</div>
+          <div class="a4-step-title">${s.name}</div>
+          <div class="a4-step-time">⏱ ${s.time} phút</div>
+          <div class="a4-step-time" style="margin-left:6px;">👷 ${s.workers} người</div>
+        </div>
+        <div class="a4-step-body">
+          <div class="desc">${s.desc}</div>
+          ${s.img?`<div><img src="${s.img}" style="width:100%;max-height:100px;object-fit:contain;border-radius:4px;border:1px solid #e5e7eb;"></div>`:''}
+          <div class="a4-step-micro"><div class="ml">Máy / Thiết bị</div><div class="mv">${s.machine||'—'}</div></div>
+          <div class="a4-step-micro"><div class="ml">Tiêu chuẩn CL</div><div class="mv">${s.standard||'—'}</div></div>
+          <div class="a4-step-micro"><div class="ml">Dung sai</div><div class="mv">${s.tolerance||'—'}</div></div>
+          <div class="a4-step-micro" style="grid-column:1/-1;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:5px 8px;"><div class="ml" style="color:#d97706;">⚠ Cảnh báo</div><div class="mv">${s.warning||'—'}</div></div>
+        </div>
+      </div>`;
+  });
+
+  const html = `
+  <div class="a4-page a4-cover">
+    <div class="a4-cov-accent"></div>
+    <div class="a4-cov-body">
+      <div class="a4-cov-logo">
+        <div class="a4-cov-mark">NS</div>
+        <div>
+          <div class="a4-cov-bn">NSCA</div>
+          <div class="a4-cov-bs">Ngôi Sao Châu Á JSC · starduct.vn</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-size:9px;color:#4b5563;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Trạng thái</div>
+          <div style="font-size:11px;font-weight:700;color:${statusColor}">${statusLabel}</div>
+        </div>
+      </div>
+      <div class="a4-cov-kicker">Technical Data Sheet · TDS</div>
+      <div class="a4-cov-title">${name}</div>
+      <div class="a4-cov-desc">${desc}</div>
+      <div class="a4-cov-meta-grid">${specsHtml}</div>
+      <div class="a4-cov-sign">
+        <div class="a4-cov-sign-box">
+          <div class="role">Người lập / Prepared by</div>
+          <div class="name">${sopAuthor}</div>
+          <div class="date">${sopDate}</div>
+        </div>
+        <div class="a4-cov-sign-box">
+          <div class="role">Bộ phận / Department</div>
+          <div class="name">${sopDept}</div>
+          <div class="date">${sopCode}</div>
+        </div>
+        <div class="a4-cov-sign-box">
+          <div class="role">Người phê duyệt / Approved by</div>
+          <div class="name">${sopApprover}</div>
+          <div class="date">${sopApvDate||'—'}</div>
+        </div>
+      </div>
+      <div class="a4-cov-ft">
+        <div><strong>Tài liệu kiểm soát nội bộ · Internal controlled document</strong>Art. No.: ${art} · Series: ${series} · Rev.: ${rev}<br>Ngày xuất: ${today}</div>
+        <div style="text-align:right;color:#4b5563;font-size:8px;">starduct.vn</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="a4-page a4-content">
+    <div class="a4-sec-hdr"><span class="a4-sec-title">📋 1. OVERVIEW — THÔNG TIN TỔNG QUAN</span><span class="a4-sec-code">Art. ${art}</span></div>
+    <div class="a4-2col">
+      <div>
+        <div class="a4-field-block"><div class="lbl">Tên sản phẩm</div><div class="val">${name}</div></div>
+        <div class="a4-field-block"><div class="lbl">Mã sản phẩm / Art. No.</div><div class="val">${art}</div></div>
+        <div class="a4-field-block"><div class="lbl">Series</div><div class="val">${series}</div></div>
+        <div class="a4-field-block"><div class="lbl">Ứng dụng</div><div class="val">${app}</div></div>
+        <div class="a4-field-block"><div class="lbl">Revision</div><div class="val">${rev}</div></div>
+      </div>
+      <div>
+        <div class="lbl" style="font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;">Điểm nổi bật</div>
+        <ul class="a4-hl-list">${hl.map(h=>`<li><div class="a4-hl-dot"></div>${h}</li>`).join('')}</ul>
+      </div>
+    </div>
+
+    <div class="a4-sec-hdr" style="margin-top:18px;"><span class="a4-sec-title">⚙️ 2. SPECIFICATIONS — THÔNG SỐ KỸ THUẬT</span></div>
+    <table class="a4-table">
+      <thead><tr><th>Thông số</th><th>Giá trị</th><th>Đơn vị</th><th>Ghi chú</th></tr></thead>
+      <tbody>${Array.from(specRows).map(tr=>{const td=tr.querySelectorAll('td');return`<tr><td><b>${td[0]?.textContent||''}</b></td><td>${td[1]?.textContent||''}</td><td>${td[2]?.textContent||''}</td><td>${td[3]?.textContent||''}</td></tr>`;}).join('')}</tbody>
+    </table>
+  </div>
+
+  <div class="a4-page a4-content">
+    <div class="a4-sec-hdr"><span class="a4-sec-title">🏭 3. MANUFACTURING SOP — QUY TRÌNH SẢN XUẤT</span><span class="a4-sec-code">${sopCode}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;font-size:11px;">
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">Bộ phận</div><div style="font-weight:700;">${sopDept}</div></div>
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">Số bước</div><div style="font-weight:700;">${sopSteps.length} bước</div></div>
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">Tổng thời gian</div><div style="font-weight:700;">${sopSteps.reduce((a,s)=>a+(parseInt(s.time)||0),0)} phút</div></div>
+      <div style="border:1px solid #e5e7eb;border-radius:5px;padding:8px;text-align:center;"><div style="color:#6b7280;font-size:8.5px;text-transform:uppercase;font-weight:700;margin-bottom:3px;">Người lập</div><div style="font-weight:700;">${sopAuthor}</div></div>
+    </div>
+    ${sopHtml}
+  </div>
+
+  <div class="a4-page a4-content">
+    <div class="a4-sec-hdr"><span class="a4-sec-title">📦 4. BILL OF MATERIALS — DANH SÁCH VẬT TƯ</span></div>
+    <table class="a4-table">
+      <thead><tr><th>#</th><th>Mã vật tư</th><th>Mô tả</th><th>Vật liệu</th><th>SL</th><th>ĐVT</th><th>NCC</th><th>Loại</th></tr></thead>
+      <tbody>${bomHtml}</tbody>
+    </table>
+
+    <div class="a4-sec-hdr" style="margin-top:18px;"><span class="a4-sec-title">🔍 5. QC / STANDARDS — KIỂM ĐỊNH CHẤT LƯỢNG</span></div>
+    <div style="font-size:11px;font-weight:700;color:#374151;margin:8px 0 4px;">Kiểm tra kích thước</div>
+    <table class="a4-table">
+      <thead><tr><th>Hạng mục</th><th>Min</th><th>Max</th><th>Thực tế</th><th>Kết quả</th></tr></thead>
+      <tbody>${qcRowsHtml(qcDim)}</tbody>
+    </table>
+    <div style="font-size:11px;font-weight:700;color:#374151;margin:10px 0 4px;">Kiểm tra chức năng</div>
+    <table class="a4-table">
+      <thead><tr><th>Hạng mục</th><th>Yêu cầu</th><th>Giới hạn</th><th>Thực tế</th><th>Kết quả</th></tr></thead>
+      <tbody>${qcRowsHtml(qcFunc)}</tbody>
+    </table>
+  </div>
+
+  <div class="a4-page-num">NSCA Technical Data Sheet · ${name} · Art. ${art} · Rev. ${rev} · ${today} · starduct.vn</div>`;
+
+  document.getElementById('pdf-preview-content').innerHTML = html;
+}
+</script>
